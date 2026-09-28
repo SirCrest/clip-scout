@@ -206,7 +206,10 @@ def run_all(agent=None, parallel=None, log=print):
     worker.start()
     try:
         while True:
-            pipeline.process(log=log)
+            try:
+                pipeline.process(log=log)
+            except Exception as e:  # one bad stream or a file hiccup must not stop the whole run
+                log(f'pipeline error: {type(e).__name__}: {e}')
             # A stream still 'waiting' after a pass has open tasks, or tasks that failed; once none are open or
             # claimed, nothing further can happen without a person.
             if not tasks.list_tasks(state='open') and not tasks.list_tasks(state='claimed'):

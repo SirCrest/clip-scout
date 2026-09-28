@@ -48,9 +48,16 @@ def now():
 
 def read_json(path, default=None):
     path = Path(path)
-    if not path.exists():
-        return default
-    text = path.read_text(encoding='utf-8-sig')
+    for attempt in range(50):  # Windows refuses a read while another process is replacing the file
+        if not path.exists():
+            return default
+        try:
+            text = path.read_text(encoding='utf-8-sig')
+            break
+        except PermissionError:
+            if attempt == 49:
+                raise
+            time.sleep(0.05)
     return json.loads(text) if text.strip() else default
 
 
