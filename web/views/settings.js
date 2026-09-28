@@ -8,6 +8,7 @@ const AGENTS = [
   { k: 'claude', n: 'Claude Code', hint: 'claude' },
   { k: 'codex', n: 'Codex', hint: 'codex' },
   { k: 'gemini', n: 'Gemini CLI', hint: 'gemini' },
+  { k: 'dsh', n: 'DeepSeek Harness', hint: 'dsh' },
   { k: 'opencode', n: 'opencode', hint: 'DeepSeek, GLM and more' },
   { k: 'custom', n: 'Other', hint: 'any command' },
 ];
@@ -38,7 +39,8 @@ export function Settings() {
         <button class=${`agent ${s.agent === a.k ? 'on' : ''} ${has ? '' : 'missing'}`} onClick=${() => save({ agent: a.k })}>
           <b>${a.n}</b><span>${has ? html`<${Icon} n="check" />${a.hint}` : html`<${Icon} n="alert" />not installed`}</span></button>`; })}</div>
       <div class="form">
-        ${s.agent === 'custom' ? html`<label>Command</label><input class="field" value=${cfg.command || ''} placeholder="mytool run {prompt}"
+        ${s.agent === 'dsh' ? html`<label>Model</label><span class="dim" style="font-size:12.5px">Set in the harness itself (~/.dsh, or /model inside dsh)</span>`
+        : s.agent === 'custom' ? html`<label>Command</label><input class="field" value=${cfg.command || ''} placeholder="mytool run {prompt}"
             onChange=${(e) => save({ agents: { custom: { command: e.target.value } } })} />`
           : html`<label>Model</label><input class="field" value=${cfg.model || ''} placeholder="the agent's default"
               onChange=${(e) => save({ agents: { [s.agent]: { model: e.target.value.trim() } } })} />

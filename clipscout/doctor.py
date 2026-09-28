@@ -78,8 +78,10 @@ def check_torch():
 
 
 def check_agents():
-    found = [a for a in ('claude', 'codex', 'gemini', 'opencode') if shutil.which(a)]
-    missing = [a for a in ('claude', 'codex', 'gemini', 'opencode') if a not in found]
+    from .agents import available
+    have = available()
+    found = [a for a, ok in have.items() if ok]
+    missing = [a for a, ok in have.items() if not ok]
     if not found:
         return [(WARN, 'no agent CLI found (claude, codex, gemini, opencode): tasks can still be done by hand')]
     note = f" (not found: {', '.join(missing)})" if missing else ''

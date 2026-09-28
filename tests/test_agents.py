@@ -1,3 +1,5 @@
+import json
+
 import pytest
 
 from clipscout import agents
@@ -21,6 +23,18 @@ def test_commands_for_each_agent(library):
     assert opencode[:3] == ['/bin/opencode', 'run', '--auto'] and opencode[-1] == p
     custom = agents.command('custom', {'command': 'mytool --go {prompt}'}, p)
     assert custom == ['/bin/mytool', '--go', p]
+
+
+def test_dsh_command_and_usage(library, monkeypatch):
+    monkeypatch.setattr(agents, '_dsh_cmd', lambda: ['npx', '--yes', '@deepseek-ai/dsh'])
+    cmd = agents.command('dsh', {}, 'Do task x.')
+    assert cmd[0] == '/bin/npx' and cmd[-4:] == ['--profile', 'headless', '--json', 'Do task x.']
+    events = '\n'.join(json.dumps(e) for e in [
+        {'type': 'status', 'phase': 'step_end', 'usage': {'inputTokens': 6000, 'outputTokens': 100, 'cacheReadTokens': 0}},
+        {'type': 'status', 'phase': 'step_end', 'usage': {'inputTokens': 200, 'outputTokens': 50, 'cacheReadTokens': 6000}},
+        {'type': 'final', 'text': 'Done.'}])
+    u = agents.usage('dsh', events)
+    assert u['tokens_in'] == 12200 and u['tokens_out'] == 150 and u['tokens_cached'] == 6000
 
 
 def test_custom_needs_a_prompt_placeholder(library):

@@ -8,12 +8,14 @@ The prompt stays one plain line because npm-installed CLIs on Windows go through
 and newlines.
 """
 import json
+import os
 import shlex
 import shutil
 import subprocess
 import threading
 import time
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
+from pathlib import Path
 
 from . import library as lib
 from . import tasks
@@ -28,9 +30,36 @@ DEFAULT_SETTINGS = {
         'codex': {'model': '', 'effort': ''},
         'gemini': {'model': ''},
         'opencode': {'model': ''},
+        'dsh': {},
         'custom': {'command': ''},
     },
 }
+DSH_HOME = Path(os.environ.get('DSH_HOME', Path.home() / '.dsh'))
+
+
+def _dsh_cmd():
+    """The DeepSeek Harness (github.com/deepseek-ai/deepseek-harness): `dsh` when installed, else through npx."""
+    if shutil.which('dsh'):
+        return ['dsh']
+    if shutil.which('npx') and DSH_HOME.exists():
+        return ['npx', '--yes', '@deepseek-ai/dsh']
+    return None
+
+
+def dsh_model():
+    """The model the harness is set to (its own settings.yaml; dsh headless has no model flag)."""
+    for name in ('settings.yaml', 'settings.yaml.imported'):  # newer harness versions import it into storage
+        try:
+            text = (DSH_HOME / name).read_text(encoding='utf-8')
+            break
+        except OSError:
+            continue
+    else:
+        return None
+    import re
+    m = re.search(r'agent-default-model:\s*\n(?:\s+.*\n)*?\s+model:\s*(\S+)', text)
+    effort = re.search(r'reasoningEffort:\s*(\S+)', text)
+    return (m.group(1) if m else None, effort.group(1) if effort else None)
 AGENT_NAMES = tuple(DEFAULT_SETTINGS['agents'])
 
 
@@ -53,7 +82,7 @@ def save_settings(value):
 def available():
     """Which agent CLIs are on PATH."""
     exe = {'claude': 'claude', 'codex': 'codex', 'gemini': 'gemini', 'opencode': 'opencode'}
-    return {name: bool(shutil.which(cmd)) for name, cmd in exe.items()}
+    return {**{name: bool(shutil.which(cmd)) for name, cmd in exe.items()}, 'dsh': bool(_dsh_cmd())}
 
 
 def prompt_for(tid, retry=False):
@@ -88,6 +117,11 @@ def command(name, cfg, prompt):
         cmd += ['-p', prompt]
     elif name == 'opencode':  # opencode.ai/docs/cli: `run [message]`, -m provider/model, --auto approves permissions
         cmd = ['opencode', 'run', '--auto'] + (['-m', model] if model else []) + [prompt]
+    elif name == 'dsh':  # `dsh --profile headless [--json] <task>`: model and key come from ~/.dsh
+        base = _dsh_cmd()
+        if not base:
+            raise FileNotFoundError('the DeepSeek Harness (dsh) is not installed')
+        cmd = base + ['--profile', 'headless', '--json', prompt]
     elif name == 'custom':
         template = cfg.get('command') or ''
         if '{prompt}' not in template:
@@ -127,9 +161,30 @@ def usage(name, stdout):
                 tin += u.get('input_tokens', 0) or 0
                 tout += u.get('output_tokens', 0) or 0
             out['tokens_in'], out['tokens_out'] = tin or None, tout or None
+        elif name == 'dsh':
+            tin = tout = cached = 0
+            for line in stdout.splitlines():
+                try:
+                    ev = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                u = ev.get('usage') or {}
+                tin += u.get('inputTokens', 0) or 0
+                tout += u.get('outputTokens', 0) or 0
+                cached += u.get('cacheReadTokens', 0) or 0
+            model = dsh_model()
+            out.update(tokens_in=tin + cached or None, tokens_out=tout or None, tokens_cached=cached or None,
+                       models=[model[0]] if model and model[0] else None)
     except (ValueError, IndexError, AttributeError):
         pass
     return {k: v for k, v in out.items() if v not in (None, [], '')}
+
+
+def _json_line(line):
+    try:
+        return json.loads(line)
+    except json.JSONDecodeError:
+        return None
 
 
 def answer_from_stdout(stdout):
@@ -175,7 +230,11 @@ def run_task(task, name, cfg, log=print):
                 **usage(name, stdout or '')}
         out_file = folder / 'output.json'
         if not out_file.exists() and name not in ('claude', 'codex'):  # stdout of claude/codex is event JSON
-            printed = answer_from_stdout(stdout or '')
+            text = stdout or ''
+            if name == 'dsh':  # NDJSON events: the answer is the final message
+                finals = [e for e in (_json_line(l) for l in text.splitlines()) if e and e.get('type') == 'final']
+                text = finals[-1].get('text', '') if finals else ''
+            printed = answer_from_stdout(text)
             if printed is not None:
                 lib.write_json(out_file, printed)
                 meta['from_stdout'] = True
