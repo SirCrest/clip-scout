@@ -1,0 +1,2038 @@
+[
+ {
+  "approved": "4K Pro - Difference Between 4K Pro and 4K60 Pro MK.2.mp4",
+  "duration": 57.2,
+  "stream": "tw2626990523",
+  "date": "2025-11-24",
+  "span": [
+   9653.2,
+   9708.8
+  ],
+  "match": 0.02,
+  "candidates": [
+   {
+    "key": "tw2626990523/t096719",
+    "cover": 0.67,
+    "purity": 0.95
+   },
+   {
+    "key": "tw2626990523/t095416",
+    "cover": 1.0,
+    "purity": 0.17
+   },
+   {
+    "key": "tw2626990523/t096185",
+    "cover": 0.19,
+    "purity": 0.23
+   }
+  ]
+ },
+ {
+  "approved": "4K Pro - How Much Do You Recommend a Dual PC Setup.mp4",
+  "duration": 165.1,
+  "stream": "tw2805914822",
+  "date": "2026-06-26",
+  "span": [
+   900.5,
+   1068.2
+  ],
+  "match": 0.0,
+  "candidates": [
+   {
+    "key": "tw2805914822/t008902",
+    "cover": 0.44,
+    "purity": 0.88
+   },
+   {
+    "key": "tw2805914822/t009994",
+    "cover": 0.42,
+    "purity": 0.77
+   }
+  ]
+ },
+ {
+  "approved": "4K Pro - Supported Resolutions and Frame Rates.mp4",
+  "duration": 55.8,
+  "stream": "tw2714549809",
+  "date": "2026-03-05",
+  "span": [
+   4745.9,
+   4753.1
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2714549809/t047263",
+    "cover": 1.0,
+    "purity": 0.19
+   }
+  ]
+ },
+ {
+  "approved": "4K Pro 4K X - Do You Need a HDMI 2.1 Cable for VRR.mp4",
+  "duration": 61.7,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   8774.2,
+   8777.2
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2632798587/t086926",
+    "cover": 1.0,
+    "purity": 0.03
+   }
+  ]
+ },
+ {
+  "approved": "BTS - Stream Setup.mp4",
+  "duration": 63.9,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   5658.8,
+   5724.6
+  ],
+  "match": 0.8,
+  "candidates": [
+   {
+    "key": "tw2778237205/t056585",
+    "cover": 0.99,
+    "purity": 0.99
+   },
+   {
+    "key": "tw2778237205/t057257",
+    "cover": 0.01,
+    "purity": 0.02
+   }
+  ]
+ },
+ {
+  "approved": "Diablo 4 - How to use profiles.mp4",
+  "duration": 98.3,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   4609.3,
+   4708.4
+  ],
+  "match": 0.74,
+  "candidates": [
+   {
+    "key": "tw2778237205/t046586",
+    "cover": 0.49,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Facecam - Facecam vs Facecam Neo.mkv",
+  "duration": 113.6,
+  "stream": "tw2629979344",
+  "date": "2025-11-28",
+  "span": [
+   1286.2,
+   1435.5
+  ],
+  "match": 0.81,
+  "candidates": [
+   {
+    "key": "tw2629979344/t013543",
+    "cover": 0.55,
+    "purity": 0.81
+   },
+   {
+    "key": "tw2629979344/t012862",
+    "cover": 0.33,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2629979344/t012000",
+    "cover": 0.2,
+    "purity": 0.25
+   }
+  ]
+ },
+ {
+  "approved": "Facecam 4K - Custom Filter Size.mov",
+  "duration": 49.2,
+  "stream": "tw2775133996",
+  "date": "2026-05-18",
+  "span": [
+   4044.0,
+   4094.1
+  ],
+  "match": 0.84,
+  "candidates": [
+   {
+    "key": "tw2775133996/t040620",
+    "cover": 0.66,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2775133996/t040943",
+    "cover": 0.0,
+    "purity": 0.0
+   }
+  ]
+ },
+ {
+  "approved": "Facecam 4K - Save To Hardware.mov",
+  "duration": 61.8,
+  "stream": "tw2775133996",
+  "date": "2026-05-18",
+  "span": [
+   4411.5,
+   4474.1
+  ],
+  "match": 0.88,
+  "candidates": [
+   {
+    "key": "tw2775133996/t044115",
+    "cover": 0.97,
+    "purity": 0.98
+   }
+  ]
+ },
+ {
+  "approved": "Facecam 4K - Virtual Background in Camera Hub.mov",
+  "duration": 90.8,
+  "stream": "tw2775133996",
+  "date": "2026-05-18",
+  "span": [
+   4095.1,
+   4186.1
+  ],
+  "match": 0.74,
+  "candidates": [
+   {
+    "key": "tw2775133996/t040943",
+    "cover": 0.98,
+    "purity": 0.99
+   },
+   {
+    "key": "tw2775133996/t041595",
+    "cover": 0.25,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2775133996/t041861",
+    "cover": 0.0,
+    "purity": 0.0
+   }
+  ]
+ },
+ {
+  "approved": "Facecam MK.2 & Facecam 4K - 3.0 Cables.mov",
+  "duration": 59.3,
+  "stream": "tw2775133996",
+  "date": "2026-05-18",
+  "span": [
+   7723.9,
+   7783.6
+  ],
+  "match": 0.81,
+  "candidates": [
+   {
+    "key": "tw2775133996/t077275",
+    "cover": 0.96,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Facecam MK.2 & Facecam 4K - Quick Overview.mov",
+  "duration": 154.5,
+  "stream": "tw2775133996",
+  "date": "2026-05-18",
+  "span": [
+   7439.5,
+   7594.1
+  ],
+  "match": 0.86,
+  "candidates": [
+   {
+    "key": "tw2775133996/t075360",
+    "cover": 0.35,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2775133996/t074555",
+    "cover": 0.27,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Facecam MK.2 - 720P 120FPS.mov",
+  "duration": 64.1,
+  "stream": "tw2775133996",
+  "date": "2026-05-18",
+  "span": [
+   7786.4,
+   7850.8
+  ],
+  "match": 0.83,
+  "candidates": [
+   {
+    "key": "tw2775133996/t077864",
+    "cover": 0.98,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Facecam MK.2 - Fine tuning your image quality with Camera Hub.mp4",
+  "duration": 325.4,
+  "stream": "tw2805139766",
+  "date": "2026-06-25",
+  "span": [
+   4424.1,
+   4814.9
+  ],
+  "match": 0.0,
+  "candidates": [
+   {
+    "key": "tw2805139766/t044516",
+    "cover": 0.16,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2805139766/t047648",
+    "cover": 0.1,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2805139766/t047119",
+    "cover": 0.07,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2805139766/t045943",
+    "cover": 0.06,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Facecam MK.2 - Hardware features and range of mounting options.mp4",
+  "duration": 85.4,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   16345.3,
+   16348.4
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2632798587/t162933",
+    "cover": 1.0,
+    "purity": 0.02
+   }
+  ]
+ },
+ {
+  "approved": "Facecam MK.2 - Privacy Shutter and No Built-In Mic.mp4",
+  "duration": 45.9,
+  "stream": "tw2731713281",
+  "date": "2026-03-25",
+  "span": [
+   4995.5,
+   5002.1
+  ],
+  "match": 0.02,
+  "candidates": []
+ },
+ {
+  "approved": "Facecam MK.2 - Specific Camera Specs and wide FOV.mp4",
+  "duration": 39.4,
+  "stream": "tw2805139766",
+  "date": "2026-06-25",
+  "span": [
+   4704.0,
+   4707.0
+  ],
+  "match": 0.01,
+  "candidates": []
+ },
+ {
+  "approved": "Facecam MK.2 - The value of NO built-in mic.mp4",
+  "duration": 29.3,
+  "stream": "tw2628631458",
+  "date": "2025-11-26",
+  "span": [
+   8220.9,
+   8223.9
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2628631458/t081933",
+    "cover": 1.0,
+    "purity": 0.03
+   }
+  ]
+ },
+ {
+  "approved": "Facecam MK.2 - Using it for VTubing and Work.mp4",
+  "duration": 61.7,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   8622.3,
+   8625.3
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2632798587/t085331",
+    "cover": 1.0,
+    "purity": 0.03
+   }
+  ]
+ },
+ {
+  "approved": "Facecam MK.2 - Using the wide FOV for Just Dance and Art and use PTZ.mp4",
+  "duration": 41.0,
+  "stream": "tw2574853221",
+  "date": "2025-09-24",
+  "span": [
+   3581.6,
+   3585.2
+  ],
+  "match": 0.02,
+  "candidates": [
+   {
+    "key": "tw2574853221/t035852",
+    "cover": 0.32,
+    "purity": 0.02
+   }
+  ]
+ },
+ {
+  "approved": "Facecam Neo - Supports mJPEG.mp4",
+  "duration": 29.2,
+  "stream": "tw2629979344",
+  "date": "2025-11-28",
+  "span": [
+   1424.1,
+   1454.5
+  ],
+  "match": 0.93,
+  "candidates": [
+   {
+    "key": "tw2629979344/t013543",
+    "cover": 0.99,
+    "purity": 0.3
+   }
+  ]
+ },
+ {
+  "approved": "Funny - Can you slap Wave XLR Pro.mp4",
+  "duration": 28.0,
+  "stream": "tw2713712945",
+  "date": "2026-03-04",
+  "span": [
+   503.1,
+   531.5
+  ],
+  "match": 0.72,
+  "candidates": [
+   {
+    "key": "tw2713712945/t005044",
+    "cover": 0.93,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Funny - Transparent Icons ft Phil.mp4",
+  "duration": 78.9,
+  "stream": "tw2720501273",
+  "date": "2026-03-12",
+  "span": [
+   3794.5,
+   3887.5
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2720501273/t037134",
+    "cover": 0.73,
+    "purity": 0.45
+   },
+   {
+    "key": "tw2720501273/t038729",
+    "cover": 0.17,
+    "purity": 0.63
+   }
+  ]
+ },
+ {
+  "approved": "Galleon 100 SD - Upgraded numpad and how it works.mkv",
+  "duration": 139.2,
+  "stream": "tw2777464759",
+  "date": "2026-05-21",
+  "span": [
+   10989.0,
+   11129.6
+  ],
+  "match": 0.74,
+  "candidates": [
+   {
+    "key": "tw2777464759/t109914",
+    "cover": 0.52,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t111294",
+    "cover": 0.01,
+    "purity": 0.01
+   }
+  ]
+ },
+ {
+  "approved": "Galleon 100 SD - Using it in-game in helldivers 2.mkv",
+  "duration": 325.6,
+  "stream": "tw2777464759",
+  "date": "2026-05-21",
+  "span": [
+   10311.4,
+   10671.6
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2777464759/t106311",
+    "cover": 0.11,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t105496",
+    "cover": 0.1,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t106012",
+    "cover": 0.08,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t102294",
+    "cover": 0.06,
+    "purity": 0.21
+   }
+  ]
+ },
+ {
+  "approved": "General - LEWITT on the most challenging parts of creating Elgato Wave Next.mp4",
+  "duration": 258.7,
+  "stream": "tw2718869082",
+  "date": "2026-03-10",
+  "span": [
+   1918.0,
+   2178.9
+  ],
+  "match": 0.9,
+  "candidates": [
+   {
+    "key": "tw2718869082/t020383",
+    "cover": 0.35,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2718869082/t019510",
+    "cover": 0.34,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2718869082/t021769",
+    "cover": 0.01,
+    "purity": 0.04
+   }
+  ]
+ },
+ {
+  "approved": "Good Resources for more information about Elgato Products and Community.mov",
+  "duration": 237.7,
+  "stream": "tw2775133996",
+  "date": "2026-05-18",
+  "span": [
+   5447.7,
+   5685.0
+  ],
+  "match": 0.84,
+  "candidates": [
+   {
+    "key": "tw2775133996/t054515",
+    "cover": 0.4,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "KLA MK.2 - Adding to Control Center.mp4",
+  "duration": 224.5,
+  "stream": "tw2832049015",
+  "date": "2026-07-29",
+  "span": [
+   3245.7,
+   3490.0
+  ],
+  "match": 0.76,
+  "candidates": [
+   {
+    "key": "tw2832049015/t032787",
+    "cover": 0.66,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2832049015/t034075",
+    "cover": 0.09,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2832049015/t032256",
+    "cover": 0.05,
+    "purity": 0.34
+   }
+  ]
+ },
+ {
+  "approved": "KLA MK.2 - Different ways to set up control center.mp4",
+  "duration": 322.1,
+  "stream": "tw2832049015",
+  "date": "2026-07-29",
+  "span": [
+   3973.8,
+   4298.1
+  ],
+  "match": 0.83,
+  "candidates": [
+   {
+    "key": "tw2832049015/t041180",
+    "cover": 0.41,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2832049015/t041826",
+    "cover": 0.21,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2832049015/t040532",
+    "cover": 0.14,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2832049015/t039959",
+    "cover": 0.13,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "KLA MK.2 - Focus Grid.mp4",
+  "duration": 270.1,
+  "stream": "tw2832049015",
+  "date": "2026-07-29",
+  "span": [
+   2041.9,
+   2311.7
+  ],
+  "match": 0.82,
+  "candidates": [
+   {
+    "key": "tw2832049015/t020616",
+    "cover": 0.32,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2832049015/t021672",
+    "cover": 0.28,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "KLA MK.2 - Stream Deck Control.mp4",
+  "duration": 325.0,
+  "stream": "tw2832049015",
+  "date": "2026-07-29",
+  "span": [
+   3483.3,
+   3806.3
+  ],
+  "match": 0.8,
+  "candidates": [
+   {
+    "key": "tw2832049015/t034913",
+    "cover": 0.41,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2832049015/t036563",
+    "cover": 0.27,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2832049015/t037450",
+    "cover": 0.19,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2832049015/t038077",
+    "cover": 0.0,
+    "purity": 0.01
+   }
+  ]
+ },
+ {
+  "approved": "KLA MK.2 - Why connect over wifi.mp4",
+  "duration": 38.1,
+  "stream": "tw2832049015",
+  "date": "2026-07-29",
+  "span": [
+   3223.8,
+   3264.3
+  ],
+  "match": 0.71,
+  "candidates": [
+   {
+    "key": "tw2832049015/t032256",
+    "cover": 0.81,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2832049015/t031854",
+    "cover": 0.04,
+    "purity": 0.04
+   }
+  ]
+ },
+ {
+  "approved": "KLA MK.2 - Why good lighting matters - On and Off comparison.mp4",
+  "duration": 208.1,
+  "stream": "tw2832049015",
+  "date": "2026-07-29",
+  "span": [
+   5621.2,
+   5887.8
+  ],
+  "match": 0.82,
+  "candidates": [
+   {
+    "key": "tw2832049015/t056879",
+    "cover": 0.53,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2832049015/t058284",
+    "cover": 0.22,
+    "purity": 0.88
+   },
+   {
+    "key": "tw2832049015/t055907",
+    "cover": 0.2,
+    "purity": 0.63
+   }
+  ]
+ },
+ {
+  "approved": "Prompter - Cold Shoe Mount on top of Prompter.mov",
+  "duration": 69.6,
+  "stream": "tw2775133996",
+  "date": "2026-05-18",
+  "span": [
+   9362.2,
+   9430.8
+  ],
+  "match": 0.8,
+  "candidates": [
+   {
+    "key": "tw2775133996/t093386",
+    "cover": 1.0,
+    "purity": 0.59
+   }
+  ]
+ },
+ {
+  "approved": "Prompter - Overview.mp4",
+  "duration": 136.9,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   7680.3,
+   7817.8
+  ],
+  "match": 0.81,
+  "candidates": [
+   {
+    "key": "tw2778237205/t077025",
+    "cover": 0.72,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Q What's your favorite Elgato camera.mov",
+  "duration": 70.8,
+  "stream": "tw2775133996",
+  "date": "2026-05-18",
+  "span": [
+   2044.9,
+   2114.7
+  ],
+  "match": 0.83,
+  "candidates": [
+   {
+    "key": "tw2775133996/t020487",
+    "cover": 0.95,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Simple Stats - How to download plugin-.mp4",
+  "duration": 48.4,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   4223.9,
+   4272.1
+  ],
+  "match": 0.73,
+  "candidates": [
+   {
+    "key": "tw2778237205/t042216",
+    "cover": 1.0,
+    "purity": 0.93
+   }
+  ]
+ },
+ {
+  "approved": "Simple Stats - Overview.mp4",
+  "duration": 45.1,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   3210.4,
+   3257.0
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2778237205/t032104",
+    "cover": 0.98,
+    "purity": 0.99
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck +  XL - Standard Issue Pear For Scale.mp4",
+  "duration": 26.8,
+  "stream": "tw2714549809",
+  "date": "2026-03-05",
+  "span": [
+   1107.7,
+   1143.5
+  ],
+  "match": 0.67,
+  "candidates": [
+   {
+    "key": "tw2714549809/t011029",
+    "cover": 1.0,
+    "purity": 0.63
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck + - Default Profile.mp4",
+  "duration": 19.3,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   10853.4,
+   10856.7
+  ],
+  "match": 0.05,
+  "candidates": []
+ },
+ {
+  "approved": "Stream Deck + - Dial Stack.mp4",
+  "duration": 59.8,
+  "stream": "tw2805139766",
+  "date": "2026-06-25",
+  "span": [
+   8022.3,
+   8050.9
+  ],
+  "match": 0.04,
+  "candidates": [
+   {
+    "key": "tw2805139766/t080072",
+    "cover": 1.0,
+    "purity": 0.46
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck + - Folders.mp4",
+  "duration": 62.4,
+  "stream": "tw2804375674",
+  "date": "2026-06-24",
+  "span": [
+   3598.3,
+   3602.0
+  ],
+  "match": 0.01,
+  "candidates": []
+ },
+ {
+  "approved": "Stream Deck + - Multi Action.mp4",
+  "duration": 289.2,
+  "stream": "tw2720501273",
+  "date": "2026-03-12",
+  "span": [
+   5384.7,
+   5696.1
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2720501273/t054987",
+    "cover": 0.4,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2720501273/t054549",
+    "cover": 0.16,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2720501273/t053859",
+    "cover": 0.16,
+    "purity": 0.99
+   },
+   {
+    "key": "tw2720501273/t056327",
+    "cover": 0.21,
+    "purity": 0.62
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck + XL - Network Dock Deep Dive.mp4",
+  "duration": 240.0,
+  "stream": "tw2720501273",
+  "date": "2026-03-12",
+  "span": [
+   2533.0,
+   2771.0
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2720501273/t025432",
+    "cover": 0.59,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2720501273/t027261",
+    "cover": 0.11,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2720501273/t027113",
+    "cover": 0.04,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck + XL - Size Comparison.mp4",
+  "duration": 55.7,
+  "stream": "tw2720501273",
+  "date": "2026-03-12",
+  "span": [
+   2035.6,
+   2090.5
+  ],
+  "match": 0.78,
+  "candidates": [
+   {
+    "key": "tw2720501273/t020033",
+    "cover": 0.7,
+    "purity": 0.53
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck + XL - Turning Pages into Folders.mp4",
+  "duration": 27.3,
+  "stream": "tw2720501273",
+  "date": "2026-03-12",
+  "span": [
+   3871.1,
+   3897.1
+  ],
+  "match": 0.77,
+  "candidates": [
+   {
+    "key": "tw2720501273/t038729",
+    "cover": 0.94,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck + XL - USB Hub Deep Dive.mp4",
+  "duration": 249.0,
+  "stream": "tw2720501273",
+  "date": "2026-03-12",
+  "span": [
+   2225.9,
+   2533.7
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2720501273/t022880",
+    "cover": 0.22,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2720501273/t024849",
+    "cover": 0.16,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2720501273/t024074",
+    "cover": 0.15,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2720501273/t023532",
+    "cover": 0.14,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - Best usage - Could put together examples of Stream Deck usage.mp4",
+  "duration": 89.0,
+  "stream": "tw2804375674",
+  "date": "2026-06-24",
+  "span": [
+   2311.0,
+   2402.0
+  ],
+  "match": 0.86,
+  "candidates": [
+   {
+    "key": "tw2804375674/t023110",
+    "cover": 0.98,
+    "purity": 0.99
+   },
+   {
+    "key": "tw2804375674/t023388",
+    "cover": 0.51,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - Copy and paste pages.mkv",
+  "duration": 54.5,
+  "stream": "tw2777464759",
+  "date": "2026-05-21",
+  "span": [
+   11245.0,
+   11299.8
+  ],
+  "match": 0.77,
+  "candidates": [
+   {
+    "key": "tw2777464759/t112468",
+    "cover": 0.47,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - Difference between regular and scissor key.mkv",
+  "duration": 281.7,
+  "stream": "tw2777464759",
+  "date": "2026-05-21",
+  "span": [
+   3368.8,
+   3650.4
+  ],
+  "match": 0.75,
+  "candidates": [
+   {
+    "key": "tw2777464759/t033733",
+    "cover": 0.45,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t035441",
+    "cover": 0.3,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t035152",
+    "cover": 0.11,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - Display info on the keys.mp4",
+  "duration": 100.0,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   3292.5,
+   3391.0
+  ],
+  "match": 0.72,
+  "candidates": [
+   {
+    "key": "tw2632798587/t032934",
+    "cover": 1.0,
+    "purity": 0.98
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - Drag and drop .bat files.mp4",
+  "duration": 40.0,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   3221.6,
+   3260.9
+  ],
+  "match": 0.75,
+  "candidates": [
+   {
+    "key": "tw2632798587/t032210",
+    "cover": 1.0,
+    "purity": 0.96
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - Easy to set up no coding - plugins are synced.mp4",
+  "duration": 73.4,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   3035.8,
+   3111.0
+  ],
+  "match": 0.74,
+  "candidates": [
+   {
+    "key": "tw2632798587/t030398",
+    "cover": 0.97,
+    "purity": 0.98
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - Heres how you can set up cross interaction with your Stream Decks - Social.mp4",
+  "duration": 110.0,
+  "stream": "tw2804375674",
+  "date": "2026-06-24",
+  "span": [
+   2707.8,
+   2818.3
+  ],
+  "match": 0.76,
+  "candidates": [
+   {
+    "key": "tw2804375674/t026762",
+    "cover": 1.0,
+    "purity": 0.78
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - heres how you can use Stream Deck for push to talk in games.mp4",
+  "duration": 75.9,
+  "stream": "tw2804375674",
+  "date": "2026-06-24",
+  "span": [
+   5723.4,
+   5799.4
+  ],
+  "match": 0.8,
+  "candidates": [
+   {
+    "key": "tw2804375674/t056988",
+    "cover": 1.0,
+    "purity": 0.75
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - How elgato uses Stream Deck plus for hosts.mkv",
+  "duration": 195.1,
+  "stream": "tw2777464759",
+  "date": "2026-05-21",
+  "span": [
+   12649.9,
+   12844.7
+  ],
+  "match": 0.85,
+  "candidates": [
+   {
+    "key": "tw2777464759/t127054",
+    "cover": 0.3,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t128116",
+    "cover": 0.13,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t127866",
+    "cover": 0.1,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t126862",
+    "cover": 0.1,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - how to export an action to share with your friends.mp4",
+  "duration": 164.0,
+  "stream": "tw2804375674",
+  "date": "2026-06-24",
+  "span": [
+   5527.7,
+   5691.7
+  ],
+  "match": 0.77,
+  "candidates": [
+   {
+    "key": "tw2804375674/t055354",
+    "cover": 0.96,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - OBS Scenes.mp4",
+  "duration": 62.5,
+  "stream": "tw2626990523",
+  "date": "2025-11-24",
+  "span": [
+   5053.9,
+   5114.5
+  ],
+  "match": 0.05,
+  "candidates": [
+   {
+    "key": "tw2626990523/t049825",
+    "cover": 1.0,
+    "purity": 0.45
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - OBS Source Visibility.mp4",
+  "duration": 145.3,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   4282.3,
+   4288.0
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2632798587/t042494",
+    "cover": 1.0,
+    "purity": 0.05
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - OBS Volume Mixer.mp4",
+  "duration": 50.4,
+  "stream": "tw2626990523",
+  "date": "2025-11-24",
+  "span": [
+   3407.6,
+   3410.6
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2626990523/t033779",
+    "cover": 1.0,
+    "purity": 0.07
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - Pin Actions.mp4",
+  "duration": 40.4,
+  "stream": "tw2718041588",
+  "date": "2026-03-09",
+  "span": [
+   6462.5,
+   6466.4
+  ],
+  "match": 0.05,
+  "candidates": [
+   {
+    "key": "tw2718041588/t064451",
+    "cover": 1.0,
+    "purity": 0.13
+   },
+   {
+    "key": "tw2718041588/t063524",
+    "cover": 1.0,
+    "purity": 0.03
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - Stream Deck Family Run Through_edit.mp4",
+  "duration": 232.1,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   2788.1,
+   3021.3
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2632798587/t027952",
+    "cover": 0.46,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2632798587/t029049",
+    "cover": 0.18,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2632798587/t029980",
+    "cover": 0.1,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2632798587/t029570",
+    "cover": 0.1,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck - Stream Deck Pedal Setup.mp4",
+  "duration": 180.1,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   25400.7,
+   25456.0
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2632798587/t253156",
+    "cover": 0.94,
+    "purity": 0.37
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Mobile - Can you use Stream Deck Mobile and another device at the same time.mp4",
+  "duration": 44.5,
+  "stream": "tw2720501273",
+  "date": "2026-03-12",
+  "span": [
+   4168.1,
+   4171.5
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2720501273/t041662",
+    "cover": 1.0,
+    "purity": 0.1
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Mobile is free!.mov",
+  "duration": 56.6,
+  "stream": "tw2775133996",
+  "date": "2026-05-18",
+  "span": [
+   5028.5,
+   5086.2
+  ],
+  "match": 0.7,
+  "candidates": [
+   {
+    "key": "tw2775133996/t050301",
+    "cover": 0.95,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Mobile, Try today for free.mov",
+  "duration": 159.4,
+  "stream": "tw2775133996",
+  "date": "2026-05-18",
+  "span": [
+   5709.4,
+   5867.5
+  ],
+  "match": 0.82,
+  "candidates": [
+   {
+    "key": "tw2775133996/t057737",
+    "cover": 0.44,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2775133996/t057094",
+    "cover": 0.36,
+    "purity": 0.98
+   },
+   {
+    "key": "tw2775133996/t058415",
+    "cover": 0.17,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Pedal - Demo.mp4",
+  "duration": 121.2,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   6573.4,
+   6708.3
+  ],
+  "match": 0.7,
+  "candidates": [
+   {
+    "key": "tw2778237205/t065717",
+    "cover": 0.99,
+    "purity": 0.98
+   },
+   {
+    "key": "tw2778237205/t066417",
+    "cover": 0.2,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2778237205/t067079",
+    "cover": 0.02,
+    "purity": 0.03
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Pedal - Discord Plugin while gaming.mp4",
+  "duration": 81.0,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   3114.9,
+   3195.9
+  ],
+  "match": 0.72,
+  "candidates": [
+   {
+    "key": "tw2632798587/t031208",
+    "cover": 0.92,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Pedal - Lugikid OBS Demo.mp4",
+  "duration": 72.6,
+  "stream": "tw2629979344",
+  "date": "2025-11-28",
+  "span": [
+   7624.2,
+   7696.3
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2629979344/t076281",
+    "cover": 0.89,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Pedal - Size comparison with show Funny.mp4",
+  "duration": 29.1,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   7496.4,
+   7522.7
+  ],
+  "match": 0.73,
+  "candidates": [
+   {
+    "key": "tw2778237205/t074950",
+    "cover": 1.0,
+    "purity": 0.42
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Pedal - Smart Profile.mp4",
+  "duration": 189.1,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   10258.7,
+   10261.8
+  ],
+  "match": 0.0,
+  "candidates": []
+ },
+ {
+  "approved": "Stream Deck Pedal - This is Stream Deck Pedal, hand for scale.mp4",
+  "duration": 44.1,
+  "stream": "tw2804375674",
+  "date": "2026-06-24",
+  "span": [
+   1670.8,
+   1715.5
+  ],
+  "match": 0.75,
+  "candidates": [
+   {
+    "key": "tw2804375674/t016694",
+    "cover": 0.97,
+    "purity": 0.94
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Plus - Advanced dial actions.mkv",
+  "duration": 344.2,
+  "stream": "tw2777464759",
+  "date": "2026-05-21",
+  "span": [
+   6335.4,
+   6680.7
+  ],
+  "match": 0.75,
+  "candidates": [
+   {
+    "key": "tw2777464759/t063363",
+    "cover": 0.29,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t064710",
+    "cover": 0.22,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t066115",
+    "cover": 0.18,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2777464759/t065476",
+    "cover": 0.16,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Plus - Recommendation_edit.mp4",
+  "duration": 117.0,
+  "stream": "tw2632798587",
+  "date": "2025-12-01",
+  "span": [
+   3400.0,
+   3517.6
+  ],
+  "match": 0.71,
+  "candidates": [
+   {
+    "key": "tw2632798587/t034026",
+    "cover": 0.55,
+    "purity": 1.0
+   },
+   {
+    "key": "tw2632798587/t034957",
+    "cover": 0.14,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Pro Tip - Drag the app onto a key and Open Application action.mp4",
+  "duration": 105.0,
+  "stream": "tw2804375674",
+  "date": "2026-06-24",
+  "span": [
+   7232.1,
+   7337.4
+  ],
+  "match": 0.75,
+  "candidates": [
+   {
+    "key": "tw2804375674/t072593",
+    "cover": 0.75,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Stream Deck Pro Tip Drag and Drop.mp4",
+  "duration": 38.4,
+  "stream": "tw2804375674",
+  "date": "2026-06-24",
+  "span": [
+   5380.6,
+   5424.5
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2804375674/t053827",
+    "cover": 0.97,
+    "purity": 0.99
+   }
+  ]
+ },
+ {
+  "approved": "Switch Profile - Demo.mp4",
+  "duration": 51.0,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   7022.3,
+   7074.1
+  ],
+  "match": 0.73,
+  "candidates": [
+   {
+    "key": "tw2778237205/t069977",
+    "cover": 1.0,
+    "purity": 0.66
+   }
+  ]
+ },
+ {
+  "approved": "Unifi Monitor Plugin - Overview-.mp4",
+  "duration": 77.6,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   2556.1,
+   2635.3
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2778237205/t025571",
+    "cover": 0.94,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Universal Music Controller - Overview.mp4",
+  "duration": 20.6,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   3267.3,
+   3290.0
+  ],
+  "match": 0.71,
+  "candidates": [
+   {
+    "key": "tw2778237205/t032663",
+    "cover": 0.86,
+    "purity": 0.94
+   },
+   {
+    "key": "tw2778237205/t032891",
+    "cover": 0.09,
+    "purity": 0.02
+   }
+  ]
+ },
+ {
+  "approved": "Voice Focus - Use on any mic.mp4",
+  "duration": 76.9,
+  "stream": "tw2629979344",
+  "date": "2025-11-28",
+  "span": [
+   2373.9,
+   2452.7
+  ],
+  "match": 0.85,
+  "candidates": [
+   {
+    "key": "tw2629979344/t023186",
+    "cover": 0.98,
+    "purity": 0.58
+   },
+   {
+    "key": "tw2629979344/t024314",
+    "cover": 0.25,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Wave Link - How To Beta Test.mp4",
+  "duration": 42.6,
+  "stream": "tw2712880879",
+  "date": "2026-03-03",
+  "span": [
+   8290.5,
+   8334.5
+  ],
+  "match": 0.73,
+  "candidates": [
+   {
+    "key": "tw2712880879/t082902",
+    "cover": 0.96,
+    "purity": 0.95
+   },
+   {
+    "key": "tw2712880879/t083330",
+    "cover": 0.05,
+    "purity": 0.09
+   }
+  ]
+ },
+ {
+  "approved": "Wave Link - How To Download Wave Link on Marketplace.mp4",
+  "duration": 24.1,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   4225.8,
+   4228.8
+  ],
+  "match": 0.01,
+  "candidates": [
+   {
+    "key": "tw2778237205/t042216",
+    "cover": 1.0,
+    "purity": 0.06
+   }
+  ]
+ },
+ {
+  "approved": "Wave Link - Julian firing shots at Steel Series.mp4",
+  "duration": 55.9,
+  "stream": "tw2712880879",
+  "date": "2026-03-03",
+  "span": [
+   5195.9,
+   5253.1
+  ],
+  "match": 0.77,
+  "candidates": [
+   {
+    "key": "tw2712880879/t051953",
+    "cover": 0.99,
+    "purity": 0.97
+   }
+  ]
+ },
+ {
+  "approved": "Wave Link - Toggle and press to hold effects.mp4",
+  "duration": 79.4,
+  "stream": "tw2712880879",
+  "date": "2026-03-03",
+  "span": [
+   4495.0,
+   4575.6
+  ],
+  "match": 0.8,
+  "candidates": [
+   {
+    "key": "tw2712880879/t044944",
+    "cover": 1.0,
+    "purity": 0.95
+   }
+  ]
+ },
+ {
+  "approved": "Wave Link - Voice Focus Benefits no-demo.mp4",
+  "duration": 60.1,
+  "stream": "tw2712880879",
+  "date": "2026-03-03",
+  "span": [
+   4088.7,
+   4164.4
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2712880879/t040887",
+    "cover": 1.0,
+    "purity": 0.99
+   }
+  ]
+ },
+ {
+  "approved": "Wave Link Overview - Adding Apps or mics.mp4",
+  "duration": 110.3,
+  "stream": "tw2715416202",
+  "date": "2026-03-06",
+  "span": [
+   3970.6,
+   4078.8
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2715416202/t040518",
+    "cover": 0.27,
+    "purity": 0.41
+   },
+   {
+    "key": "tw2715416202/t039009",
+    "cover": 0.13,
+    "purity": 0.17
+   }
+  ]
+ },
+ {
+  "approved": "Wave Link Overview - Adding Audio Effects to apps like Spotify.mp4",
+  "duration": 68.0,
+  "stream": "tw2715416202",
+  "date": "2026-03-06",
+  "span": [
+   8127.8,
+   8197.5
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2715416202/t081243",
+    "cover": 0.98,
+    "purity": 0.95
+   },
+   {
+    "key": "tw2715416202/t081961",
+    "cover": 0.02,
+    "purity": 0.02
+   }
+  ]
+ },
+ {
+  "approved": "Wave Link Overview - What is Sound Check.mp4",
+  "duration": 74.1,
+  "stream": "tw2715416202",
+  "date": "2026-03-06",
+  "span": [
+   3700.8,
+   3775.4
+  ],
+  "match": 0.87,
+  "candidates": [
+   {
+    "key": "tw2715416202/t037008",
+    "cover": 0.98,
+    "purity": 0.99
+   }
+  ]
+ },
+ {
+  "approved": "Wave Link Overview - Why did we make it v2.mp4",
+  "duration": 73.8,
+  "stream": "tw2715416202",
+  "date": "2026-03-06",
+  "span": [
+   1931.0,
+   2004.8
+  ],
+  "match": 0.91,
+  "candidates": [
+   {
+    "key": "tw2715416202/t019327",
+    "cover": 0.98,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Wave Mic Arm LP-Pro - Comparison.mp4",
+  "duration": 144.8,
+  "stream": "tw2778237205",
+  "date": "2026-05-22",
+  "span": [
+   6334.4,
+   6478.4
+  ],
+  "match": 0.82,
+  "candidates": [
+   {
+    "key": "tw2778237205/t063336",
+    "cover": 0.99,
+    "purity": 0.98
+   }
+  ]
+ },
+ {
+  "approved": "Wave XLR MK2 - Will MK1 faceplates work and upcoming customs.mp4",
+  "duration": 65.9,
+  "stream": "tw2712880879",
+  "date": "2026-03-03",
+  "span": [
+   4644.7,
+   4711.4
+  ],
+  "match": 0.81,
+  "candidates": [
+   {
+    "key": "tw2712880879/t046447",
+    "cover": 1.0,
+    "purity": 0.99
+   }
+  ]
+ },
+ {
+  "approved": "Wave XLR Pro - The incredible XLR Input processing pipeline.mp4",
+  "duration": 137.4,
+  "stream": "tw2714549809",
+  "date": "2026-03-05",
+  "span": [
+   2639.8,
+   2818.6
+  ],
+  "match": 0.88,
+  "candidates": [
+   {
+    "key": "tw2714549809/t027254",
+    "cover": 0.33,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "Wave XLR Pro - Why is it not combined with Stream Deck + XL - pick and choose discussion.mp4",
+  "duration": 94.7,
+  "stream": "tw2714549809",
+  "date": "2026-03-05",
+  "span": [
+   830.8,
+   927.7
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2714549809/t008308",
+    "cover": 1.0,
+    "purity": 0.68
+   }
+  ]
+ },
+ {
+  "approved": "Wave3 MK2 - LED Ring demo and multi-function dial.mp4",
+  "duration": 59.4,
+  "stream": "tw2712880879",
+  "date": "2026-03-03",
+  "span": [
+   8024.7,
+   8084.5
+  ],
+  "match": 0.74,
+  "candidates": [
+   {
+    "key": "tw2712880879/t079990",
+    "cover": 0.99,
+    "purity": 0.69
+   }
+  ]
+ },
+ {
+  "approved": "XLR Pro - Wave FX Low Cut Filter Explainer.mp4",
+  "duration": 76.9,
+  "stream": "tw2714549809",
+  "date": "2026-03-05",
+  "span": [
+   2837.8,
+   2934.6
+  ],
+  "match": 0.89,
+  "candidates": [
+   {
+    "key": "tw2714549809/t028656",
+    "cover": 0.72,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "XLR Pro - What is USB Aux used do.mp4",
+  "duration": 109.4,
+  "stream": "tw2714549809",
+  "date": "2026-03-05",
+  "span": [
+   2419.6,
+   2538.7
+  ],
+  "match": 0.79,
+  "candidates": [
+   {
+    "key": "tw2714549809/t024229",
+    "cover": 0.98,
+    "purity": 0.99
+   },
+   {
+    "key": "tw2714549809/t024920",
+    "cover": 0.22,
+    "purity": 1.0
+   }
+  ]
+ },
+ {
+  "approved": "XLR Pro - Why does it have a 1-4 inch thread - giving options and cool mounting.mp4",
+  "duration": 79.5,
+  "stream": "tw2714549809",
+  "date": "2026-03-05",
+  "span": [
+   2543.0,
+   2628.5
+  ],
+  "match": 0.83,
+  "candidates": [
+   {
+    "key": "tw2714549809/t025481",
+    "cover": 0.66,
+    "purity": 1.0
+   }
+  ]
+ }
+]
