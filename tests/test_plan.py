@@ -75,6 +75,22 @@ def test_later_stage_fields_carry_over():
     assert again[0]['key_in'] == 9.5  # a measured in point survives while the hook is unchanged
 
 
+def test_merged_clips_are_kept_and_respanned():
+    picks = [{'start': 11.0, 'last': 11.0, 'start_word': 'I'}, {'start': 12.9, 'last': 12.9}]
+    clips = plan.build(FakeStream(), picks, WORDS, KEYS)
+    a, b = clips
+    merged = {'id': 't000114b', 'key': 'tw123/t000114b', 'merged_from': [a['id'], b['id']], 'title': 'Hotkeys',
+              'hook_at': 0, 'source_out': 0, 'judge': {'bin': 'top'}}
+    again = plan.build(FakeStream(), picks, WORDS, KEYS, clips + [merged])
+    m = next(c for c in again if c.get('merged_from'))
+    assert m['id'] == 't000114b' and m['title'] == 'Hotkeys' and m['judge'] == {'bin': 'top'}
+    assert (m['hook_at'], m['source_out'], m['key_in']) == (a['hook_at'], b['source_out'], a['key_in'])
+    assert m['duration'] == round(b['source_out'] - a['hook_at'], 2)
+    assert [c['id'] for c in again] == ['t000114', 't000114b', 't000129']
+    gone = plan.build(FakeStream(), picks[:1], WORDS, KEYS, clips + [merged])  # a part was dropped
+    assert not any(c.get('merged_from') for c in gone)
+
+
 def test_music_flags_replace_guess():
     c = {'flags': ['music', 'dated']}
     plan.music_flags(c, {'share': 0.0, 'peak': 0.25})

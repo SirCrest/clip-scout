@@ -9,6 +9,7 @@ import subprocess
 
 import numpy as np
 
+from . import library as lib
 from .plan import music_flags
 
 MODEL = 'MIT/ast-finetuned-audioset-10-10-0.4593'
@@ -73,7 +74,9 @@ def run(stream, progress=lambda f, note='': None):
         if n % 10 == 0 or n == len(todo):
             stream.save('music.json', done)
             progress(n / len(todo), f'{n}/{len(todo)} clips')
-    for c in clips:
-        if c['id'] in done:
-            music_flags(c, done[c['id']])
-    stream.save('clips.json', clips)
+    with lib.locked(stream.path('clips.json')):  # judge and the app write clips.json too: re-read under the lock
+        clips = stream.clips()
+        for c in clips:
+            if c['id'] in done:
+                music_flags(c, done[c['id']])
+        stream.save('clips.json', clips)

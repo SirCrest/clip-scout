@@ -8,8 +8,11 @@ picks.json this finds:
   key_in      the last video keyframe at or before the hook, for lossless (stream-copy) export; the words between
               key_in and hook_at are `preroll_words` and give the `preroll-speech` / `long-preroll` flags
 `raw` picks (speechless moments) use their start/last seconds as given. Clip ids stay stable across re-plans,
-and fields added by later stages (judge, music, parked...) are carried over for the same id.
-Writes clips.json and thumbs/<clip id>.jpg (a frame 1 s after the hook).
+and fields added by later stages (judge, music, parked...) are carried over for the same id. Merged clips (added
+by the app, with `merged_from: [clip id...]` and no pick behind them) are kept and re-spanned from their parts,
+or dropped when a part no longer exists.
+Writes clips.json (under its lock: judge and the app write it too) and thumbs/<clip id>.jpg (a frame 1 s after
+the hook).
 """
 import re
 import struct
@@ -112,7 +115,7 @@ def music_flags(clip, m):
 def build(stream, picks, words, keys, previous=()):
     """clips.json entries for the picks, sorted by hook time, carrying over later stages' fields by id."""
     starts = [w['start'] for w in words]
-    prev = {c['id']: c for c in previous}
+    prev = {c['id']: c for c in previous if not c.get('merged_from')}
     music = stream.load('music.json', {})
     rows = []
     for p in picks:
@@ -137,7 +140,31 @@ def build(stream, picks, words, keys, previous=()):
         if cid in music:
             music_flags(clip, music[cid])
         clips.append(clip)
+    clips += merged(stream, previous, {c['id']: c for c in clips}, taken)
+    clips.sort(key=lambda c: (c['hook_at'], c['source_out']))
     return clips
+
+
+def merged(stream, previous, by_id, taken):
+    """Merged clips from `previous`, re-spanned from the first part's hook to the last part's out point."""
+    out = []
+    for old in previous:
+        if not old.get('merged_from'):
+            continue
+        parts = [by_id.get(p) for p in old['merged_from']]
+        if not parts or not all(parts):
+            continue
+        first = min(parts, key=lambda c: c['hook_at'])
+        last = max(parts, key=lambda c: c['source_out'])
+        cid = old['id'] if old['id'] not in taken else lib.clip_id(first['hook_at'], taken)
+        taken.add(cid)
+        m = dict(old)
+        m.update({'id': cid, 'key': f'{stream.id}/{cid}', 'hook_at': first['hook_at'], 'source_out': last['source_out'],
+                  'duration': round(last['source_out'] - first['hook_at'], 2), 'key_in': first['key_in'],
+                  'preroll_s': first['preroll_s'], 'preroll_words': first['preroll_words'],
+                  'source_url': source_url(stream, first['key_in'])})
+        out.append(m)
+    return out
 
 
 def jpeg_width(path):
@@ -200,8 +227,9 @@ def run(stream, progress=lambda f, note='': None):
         raise RuntimeError('picks.json has clips but transcript.json has no words')
     keys = keyframes(stream) if picks else []
     progress(0.1, 'cut points')
-    clips = build(stream, picks, words, keys, stream.clips())
-    stream.save('clips.json', clips)
+    with lib.locked(stream.path('clips.json')):
+        clips = build(stream, picks, words, keys, stream.clips())
+        stream.save('clips.json', clips)
     progress(0.2, f'{len(clips)} clips')
     made, failed = thumbnails(stream, clips, progress)
     if failed:
