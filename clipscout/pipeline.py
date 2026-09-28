@@ -49,8 +49,8 @@ def advance(stream, until=None, log=print):
                 continue
             if not mine:
                 opened = tasks.open_stage_tasks(stream, name)
-                if not opened:  # e.g. no clips were picked, so there is nothing to judge
-                    stream.set_stage(name, 'skipped', note='nothing to do')
+                if not opened:  # no clips were picked, or every clip already has an answer
+                    stream.set_stage(name, 'done', note='nothing new')
                     continue
                 stream.set_stage(name, 'waiting', tasks=opened)
                 log(f'{stream.id}: {name} waiting on {len(opened)} agent task(s)')

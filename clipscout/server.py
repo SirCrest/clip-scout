@@ -562,6 +562,17 @@ async def api_events(request: Request):
                              headers={'Cache-Control': 'no-cache', 'X-Accel-Buffering': 'no'})
 
 
+@app.get('/api/wave/{sid}')
+async def api_wave(sid: str, a: float | None = None, b: float | None = None, n: int = 600):
+    from . import waves
+    stream = catalog.stream(sid)
+    if not stream.media or not stream.media.exists():
+        raise HTTPException(404, 'this stream has no video yet')
+    if a is None:
+        return waves.overview(stream)
+    return await asyncio.to_thread(waves.clip, stream, max(0.0, a), b if b is not None else a + 60, n)
+
+
 @app.get('/media/{sid}')
 def media(sid: str):
     stream = catalog.stream(sid)

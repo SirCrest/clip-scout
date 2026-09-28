@@ -65,7 +65,7 @@ def packet(stream, clips, part=None):
 
 
 def open_tasks(stream):
-    clips = stream.clips()
+    clips = [c for c in stream.clips() if not c.get('judge')]  # after a re-plan, only clips new to the judge
     if not clips:
         return []
     instructions = tasks.prompt('judge') + (lib.ELGATO / 'channel-guide.md').read_text(encoding='utf-8')

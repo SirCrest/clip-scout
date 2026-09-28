@@ -12,7 +12,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from . import elgato
+from . import elgato, waves
 from . import library as lib
 
 MODEL_REPO = 'mobiuslabsgmbh/faster-whisper-large-v3-turbo'
@@ -132,6 +132,7 @@ def run(stream, progress=lambda fraction, note='': None):
                 progress(start / duration, f'{lib.hms(start)} of {lib.hms(duration)}')
                 length = min(CHUNK, duration - start)
                 extract_audio(src, start, length, wav)
+                waves.add_chunk(stream, wav, start)
                 data['segments'] += transcribe_file(wav, offset=start)
                 start += length
                 data.update(processed=round(start, 3), duration=duration,
