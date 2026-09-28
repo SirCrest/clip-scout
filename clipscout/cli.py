@@ -108,13 +108,23 @@ def dispatch(args):
         streams = [library.get_stream(i) for i in args.ids] if args.ids else library.all_streams()
         slow = [s for s in streams if s.media and media.is_fragmented(s.media)]
         print(f'{len(slow)} of {len(streams)} source videos are fragmented' + (':' if slow else '.'))
-        for s in slow:
-            if not args.fix:
+        if not args.fix:
+            for s in slow:
                 print(f'  {s.id}  {s.title[:60]}')
-                continue
-            print(f'  {s.id}  fixing…', flush=True)
-            media.fix_stream(s)
-            print(f'  {s.id}  done')
+            return 0
+        failed = []
+        for attempt in range(2):  # a file another program has open can't be replaced; try those again at the end
+            todo, failed = (slow, []) if attempt == 0 else (failed, [])
+            for s in todo:
+                print(f'  {s.id}  fixing…', flush=True)
+                try:
+                    r = media.fix_stream(s)
+                    print(f"  {s.id}  done: {r['duration']:.0f} s, opens instantly" if r else f'  {s.id}  already fine')
+                except Exception as e:
+                    failed.append(s)
+                    print(f'  {s.id}  skipped: {e}', flush=True)
+        print(f'{len(slow) - len(failed)} fixed' + (f', {len(failed)} left: ' + ' '.join(s.id for s in failed) if failed else ''))
+        return 1 if failed else 0
     elif cmd == 'bench':
         from .bench import run
         run(verbose=args.verbose)
