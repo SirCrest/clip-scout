@@ -5,8 +5,9 @@ the VOD in as source.mp4 (a rename on the same volume), and copy its transcript,
 keyframes, music scores, judge results and thumbnails into the library format, re-keyed from the year set's file
 paths and cNNN ids to clip ids. Pre-cut clip files under clips/ are left untouched.
 
-Usage: uv run python tools/migrate_year.py [--dry-run] [--undo]
-Every move is logged in library/migration-log.json; --undo moves the VODs back.
+Usage: uv run python tools/migrate_year.py [--dry-run] [--undo] [--thumbs]
+Every move is logged in library/migration-log.json; --undo moves the VODs back. --thumbs replaces the year set's
+224 px thumbnails with 480 px ones from the source (resumable: skips thumbnails already at full width).
 """
 import json
 import shutil
@@ -217,6 +218,13 @@ def main():
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     if '--undo' in sys.argv:
         return undo()
+    if '--thumbs' in sys.argv:
+        from clipscout.plan import thumbnails
+        for s in lib.all_streams():
+            if s.clips():
+                made, failed = thumbnails(s, s.clips(), workers=4)
+                print(f'{s.id}: {made} thumbnails made, {failed} failed', flush=True)
+        return
     dry = '--dry-run' in sys.argv
     manifest = read(YEAR / 'manifest.json')
     index = read(SET / 'clip-index.json')
