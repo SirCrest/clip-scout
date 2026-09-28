@@ -52,6 +52,16 @@ def test_pick_check_rejects_bad_times_and_substrings(library):
     assert tasks.load(tid)['state'] == 'open'
 
 
+def test_off_by_one_timestamps_are_moved_not_rejected(library):
+    s = make_stream()
+    [tid] = pick.open_tasks(s)
+    answer(tid, {'corrections': [{'t': 10.0, 'from': 'Stream Deck Plus', 'to': 'Stream Deck +'}],
+                 'picks': [a_pick(start=18.2, last=30.4, start_word='I', category='workflow', product='Embrace')]})
+    assert tasks.submit(tid) == []
+    assert s.load('corrections.json')[0]['t'] == 14.5
+    assert s.load('picks.json')[0]['start'] == 25.0
+
+
 def test_schema_errors_are_reported_with_paths(library):
     s = make_stream()
     [tid] = pick.open_tasks(s)

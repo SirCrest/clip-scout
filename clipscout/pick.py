@@ -78,22 +78,53 @@ def open_tasks(stream):
     return ids
 
 
+NEAR = 3  # lines either side where an off-by-one timestamp is fixed rather than rejected
+
+
+def _nearby(order, index, t, test):
+    """The start time of the closest line within NEAR lines of t whose text passes test, or None."""
+    i = index.get(t)
+    if i is None:
+        return None
+    for d in range(1, NEAR + 1):
+        for j in (i - d, i + d):
+            if 0 <= j < len(order) and test(order[j][1]):
+                return order[j][0]
+    return None
+
+
+def _word_in(line, word):
+    return re.sub(r'\W', '', word.lower()) in [re.sub(r'\W', '', w.lower()) for w in line.split()]
+
+
 def check(task, output):
+    """Reject answers that point at lines that don't exist. A correction or start word that sits a line or two
+    away from the timestamp given is moved to its line (agents often copy the neighbouring timestamp)."""
     text = (tasks.folder(task['id']) / 'input.txt').read_text(encoding='utf-8')
-    lines = dict(parse_sentences(text))
+    order = parse_sentences(text)
+    lines, index = dict(order), {t: i for i, (t, _) in enumerate(order)}
     lo, hi = task.get('range', [0, None])
     known = set(elgato.products())
     errors = []
     for i, c in enumerate(output['corrections']):
-        line = lines.get(round(c['t'], 2))
+        t = round(c['t'], 2)
+        line = lines.get(t)
         if line is None:
             errors.append(f"corrections/{i}: t={c['t']} is not a sentence start in input.txt")
         elif c['from'] not in line:
-            errors.append(f"corrections/{i}: {c['from']!r} is not on line {c['t']} ({line[:80]!r})")
+            moved = _nearby(order, index, t, lambda s: c['from'] in s)
+            if moved is None:
+                errors.append(f"corrections/{i}: {c['from']!r} is not on line {c['t']} ({line[:80]!r})")
+            else:
+                c['t'] = moved
     for i, p in enumerate(output['picks']):
         if p.get('raw'):
             continue
         start, last = round(p['start'], 2), round(p['last'], 2)
+        if p.get('start_word') and start in lines and not _word_in(lines[start], p['start_word']):
+            moved = _nearby(order, index, start, lambda s: _word_in(s, p['start_word']))
+            if moved is not None and (moved <= last):
+                p['start'] = start = moved
         if start not in lines:
             errors.append(f'picks/{i}: start={p["start"]} is not a sentence start in input.txt')
         if last not in lines:
@@ -102,10 +133,8 @@ def check(task, output):
             errors.append(f'picks/{i}: start is after last')
         if hi is not None and start >= hi:
             errors.append(f'picks/{i}: starts in the context section (at or after {hi}); leave it out')
-        if p.get('start_word') and start in lines:
-            words = [re.sub(r'\W', '', w.lower()) for w in lines[start].split()]
-            if re.sub(r'\W', '', p['start_word'].lower()) not in words:
-                errors.append(f"picks/{i}: start_word {p['start_word']!r} is not on line {p['start']}")
+        if p.get('start_word') and start in lines and not _word_in(lines[start], p['start_word']):
+            errors.append(f"picks/{i}: start_word {p['start_word']!r} is not on line {p['start']}")
         if p['product'] not in known:
             errors.append(f"picks/{i}: product {p['product']!r} is not in the product list")
         if p['score'] < 2:
