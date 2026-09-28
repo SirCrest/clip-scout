@@ -82,12 +82,8 @@ def model():
 
 
 def probe_duration(path):
-    out = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(path)],
-                         capture_output=True, text=True).stdout.strip()
-    try:
-        return float(out)
-    except ValueError:
-        return 0.0
+    from .media import _duration
+    return _duration(path)
 
 
 def extract_audio(src, start, length, wav):

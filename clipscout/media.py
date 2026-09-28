@@ -39,9 +39,15 @@ def is_fragmented(path):
 
 
 def _duration(path):
-    out = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', str(path)],
-                         capture_output=True, text=True).stdout.strip()
-    return float(out) if out and out != 'N/A' else 0.0
+    """Content length in seconds: end minus start. Twitch's fragmented files often start at a timestamp like 62 s
+    and report the end timestamp as their duration; every Clip Scout time counts from the first frame instead."""
+    out = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=duration,start_time', '-of', 'json',
+                          str(path)], capture_output=True, text=True).stdout
+    import json
+    fmt = (json.loads(out or '{}').get('format') or {})
+    duration = float(fmt.get('duration') or 0)
+    start = float(fmt.get('start_time') or 0)
+    return max(0.0, duration - start)
 
 
 def _audio_hash(path, at, length=2.0):
@@ -83,4 +89,5 @@ def fix_stream(stream, progress=lambda fraction, note='': None):
         return None
     result = defragment(stream.media, progress)
     stream.path('keyframes.json').unlink(missing_ok=True)
+    stream.update(lambda meta: meta.update(duration=result['duration']))
     return result
