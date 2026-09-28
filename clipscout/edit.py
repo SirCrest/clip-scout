@@ -649,7 +649,7 @@ def ensure(stream, clip, open_task=True):
         stale = _task_for(stream, clip)
         if stale and stale['state'] in ('done', 'failed'):
             from . import tasks
-            tasks._save({**stale, 'state': 'cancelled', 'reason': 'the clip was detected again'})
+            tasks.cancel(stale['id'], 'the clip was detected again')
         if open_task:
             open_tasks_for([f"{stream.id}/{clip['id']}"])
     return edl

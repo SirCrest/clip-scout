@@ -12,10 +12,11 @@ dependencies = [
     "fastapi>=0.115",
     "uvicorn>=0.32",
     "numpy",
+    "torch>=2.6",         # music check (AudioSet) and filler timing (wav2vec2) in editing
+    "transformers>=4.46",
 ]
 
 [project.optional-dependencies]
-music = ["torch>=2.6", "transformers>=4.46"]
 publish = ["google-api-python-client", "google-auth-oauthlib", "tzdata"]
 
 [project.scripts]

@@ -156,16 +156,14 @@ dependencies = [
     { name = "numpy" },
     { name = "nvidia-cublas-cu12", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
     { name = "nvidia-cudnn-cu12", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+    { name = "torch", version = "2.6.0+cu124", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+    { name = "torch", version = "2.14.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'linux' and sys_platform != 'win32'" },
+    { name = "transformers" },
     { name = "uvicorn" },
     { name = "yt-dlp" },
 ]
 
 [package.optional-dependencies]
-music = [
-    { name = "torch", version = "2.6.0+cu124", source = { registry = "https://download.pytorch.org/whl/cu124" }, marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
-    { name = "torch", version = "2.14.0", source = { registry = "https://pypi.org/simple" }, marker = "sys_platform != 'linux' and sys_platform != 'win32'" },
-    { name = "transformers" },
-]
 publish = [
     { name = "google-api-python-client" },
     { name = "google-auth-oauthlib" },
@@ -187,14 +185,14 @@ requires-dist = [
     { name = "numpy" },
     { name = "nvidia-cublas-cu12", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
     { name = "nvidia-cudnn-cu12", marker = "sys_platform == 'linux' or sys_platform == 'win32'", specifier = ">=9,<10" },
-    { name = "torch", marker = "(sys_platform == 'linux' and extra == 'music') or (sys_platform == 'win32' and extra == 'music')", specifier = ">=2.6", index = "https://download.pytorch.org/whl/cu124" },
-    { name = "torch", marker = "sys_platform != 'linux' and sys_platform != 'win32' and extra == 'music'", specifier = ">=2.6" },
-    { name = "transformers", marker = "extra == 'music'", specifier = ">=4.46" },
+    { name = "torch", marker = "sys_platform != 'linux' and sys_platform != 'win32'", specifier = ">=2.6" },
+    { name = "torch", marker = "sys_platform == 'linux' or sys_platform == 'win32'", specifier = ">=2.6", index = "https://download.pytorch.org/whl/cu124" },
+    { name = "transformers", specifier = ">=4.46" },
     { name = "tzdata", marker = "extra == 'publish'" },
     { name = "uvicorn", specifier = ">=0.32" },
     { name = "yt-dlp" },
 ]
-provides-extras = ["music", "publish"]
+provides-extras = ["publish"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=8" }]

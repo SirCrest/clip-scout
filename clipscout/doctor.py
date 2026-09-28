@@ -63,9 +63,18 @@ def check_torch():
     try:
         import torch
         cuda = torch.cuda.is_available()
-        return [(OK, f"torch {torch.__version__} ({'CUDA' if cuda else 'CPU only'}) for the music check")]
+        rows = [(OK, f"torch {torch.__version__} ({'CUDA' if cuda else 'CPU only'}) for the music check and editing")]
     except ImportError:
-        return [(WARN, 'torch not installed: the music check is skipped (`uv sync --extra music` to add it)')]
+        return [(WARN, 'torch not installed: music check skipped, filler timing rougher (run `uv sync --all-extras`)')]
+    from pathlib import Path
+    import os
+    hub = Path(os.environ.get('HF_HOME', Path.home() / '.cache' / 'huggingface')) / 'hub'
+    for repo, use in (('MIT/ast-finetuned-audioset-10-10-0.4593', 'music check'),
+                      ('facebook/wav2vec2-base-960h', 'filler timing')):
+        cached = any((hub / f"models--{repo.replace('/', '--')}").glob('snapshots/*/*'))
+        rows.append((OK, f'{use} model cached') if cached else
+                    (WARN, f'{use} model downloads on first use ({repo})'))
+    return rows
 
 
 def check_agents():

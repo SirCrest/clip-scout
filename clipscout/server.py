@@ -234,10 +234,21 @@ class Renderer(Loop):
         with self.lock:
             return {'queued': [q['key'] for q in self.queue], 'active': self.active}
 
+    AGENT_WAIT = 20 * 60
+
     def _edit_pending(self, key):
+        """Wait for the agent's content edits, but only while an agent can actually do them, and not forever."""
+        s = agents.settings()
+        if not s.get('auto', True) or s['agent'] != 'custom' and not agents.available().get(s['agent']):
+            return False
         sid = key.split('/')[0]
-        return any(key in t.get('keys', []) and t['state'] in ('open', 'claimed')
-                   for t in tasks.list_tasks(kind='edit', stream=sid))
+        now = time.time()
+        for t in tasks.list_tasks(kind='edit', stream=sid):
+            if key in t.get('keys', []) and t['state'] in ('open', 'claimed'):
+                created = time.mktime(time.strptime(t['created'], '%Y-%m-%dT%H:%M:%S'))
+                if now - created < self.AGENT_WAIT:
+                    return True
+        return False
 
     def step(self):
         from . import edit, render

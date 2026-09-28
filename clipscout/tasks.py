@@ -190,6 +190,12 @@ def reopen(tid):
     _save(task)
 
 
+def cancel(tid, reason):
+    task = load(tid)
+    task.update(state='cancelled', claimed_at=None, cancelled=lib.now(), reason=reason)
+    _save(task)
+
+
 def fail(tid, reason):
     task = load(tid)
     task.update(state='failed', claimed_at=None, failed=lib.now(), reason=reason)
