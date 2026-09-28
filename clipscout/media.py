@@ -86,6 +86,11 @@ def defragment(path, progress=lambda fraction, note='': None):
     """Remux a fragmented MP4 in place, losslessly. Returns a summary; raises if the result doesn't match."""
     path = Path(path)
     tmp = path.with_name(path.stem + '.remux.mp4')
+    ok = path.with_name(path.stem + '.remux.ok')
+    if tmp.exists() and ok.exists():  # verified last time; only the swap was refused
+        _swap(tmp, path, ok)
+        progress(1.0, 'done')
+        return {'duration': round(_duration(path), 3), 'size': path.stat().st_size}
     progress(0.05, 'reading the fragmented video')
     before = _duration(path)
     progress(0.3, 'writing the index to the front')
@@ -102,15 +107,33 @@ def defragment(path, progress=lambda fraction, note='': None):
     if abs(_start_offset(path) - _start_offset(tmp)) > 0.005:
         tmp.unlink(missing_ok=True)
         raise RuntimeError('remux changed the audio/video offset; kept the original')
+    import numpy as np
     for at in (min(60.0, before * 0.2), before / 2, max(0.0, before - 120) if before > 240 else before * 0.8):
-        aligned, diff = same_sound(_pcm(path, at), _pcm(tmp, at))
+        a = _pcm(path, at)
+        for step in (13.0, -29.0, 47.0, -61.0, 97.0):  # silence proves nothing: move to where there's sound
+            if len(a) and np.any(a):
+                break
+            if 0 <= at + step < before - 5:
+                at += step
+                a = _pcm(path, at)
+        b = _pcm(tmp, at)
+        if not np.any(a) and not np.any(b) and len(a) == len(b):
+            continue  # silent in both, as far as we looked
+        aligned, diff = same_sound(a, b)
         if not aligned or diff > 0.05:
             tmp.unlink(missing_ok=True)
             raise RuntimeError(f'remuxed audio differs at {at:.0f} s (aligned {aligned}, difference {diff:.1%}); '
                                'kept the original')
-    os.replace(tmp, path)
+    ok = path.with_name(path.stem + '.remux.ok')
+    ok.write_text('verified', encoding='utf-8')
+    _swap(tmp, path, ok)
     progress(1.0, 'done')
     return {'duration': round(after, 3), 'size': path.stat().st_size}
+
+
+def _swap(tmp, path, ok):
+    os.replace(tmp, path)  # PermissionError while another program has the original open: the verified copy waits
+    ok.unlink(missing_ok=True)
 
 
 def fix_stream(stream, progress=lambda fraction, note='': None):
