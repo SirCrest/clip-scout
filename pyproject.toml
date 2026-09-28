@@ -16,7 +16,7 @@ dependencies = [
 
 [project.optional-dependencies]
 music = ["torch>=2.6", "transformers>=4.46"]
-publish = ["google-api-python-client", "google-auth-oauthlib"]
+publish = ["google-api-python-client", "google-auth-oauthlib", "tzdata"]
 
 [project.scripts]
 scout = "clipscout.cli:main"

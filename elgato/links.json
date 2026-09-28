@@ -1,0 +1,61 @@
+{
+ "_note": "Only URLs seen in Elgato Clips video descriptions (checked 2026-09-28). Add new ones only after checking them.",
+ "general": {
+  "Elgato": "https://www.elgato.com/us/en",
+  "Elgato Explorer": "https://www.elgato.com/us/en/explorer/",
+  "Downloads": "https://www.elgato.com/us/en/s/downloads",
+  "Elgato Marketplace": "https://marketplace.elgato.com/"
+ },
+ "topics": {
+  "Stream Deck": {
+   "Explore Stream Deck": "https://www.elgato.com/us/en/s/stream-deck",
+   "Stream Deck + XL": "https://e.lga.to/s/Stream-Deck-Plus-XL",
+   "Network Dock": "https://e.lga.to/s/Network-Dock"
+  },
+  "Marketplace and plugins": {
+   "Stream Deck plugins": "https://marketplace.elgato.com/stream-deck/plugins",
+   "Elgato Marketplace": "https://marketplace.elgato.com/"
+  },
+  "Wave Link and audio software": {
+   "Wave Link": "https://www.elgato.com/us/en/s/wave-link-app",
+   "Wave Link 3.0 (free)": "https://e.lga.to/s/Wave-Link-App",
+   "Wave Cast": "https://marketplace.elgato.com/audio/wavecast"
+  },
+  "Microphones and audio gear": {
+   "Wave XLR Pro": "https://e.lga.to/s/Wave-XLR-Pro",
+   "Wave Link": "https://www.elgato.com/us/en/s/wave-link-app",
+   "LEWITT": "https://www.lewitt-audio.com/"
+  },
+  "Cameras": {
+   "Facecam MK.2": "https://www.elgato.com/us/en/p/facecam-mk2",
+   "Facecam 4K": "https://www.elgato.com/us/en/p/facecam-4k",
+   "Download Camera Hub": "https://www.elgato.com/us/en/s/downloads"
+  },
+  "Prompter": {
+   "Prompter": "https://www.elgato.com/us/en/p/prompter"
+  },
+  "Lighting": {
+   "Elgato": "https://www.elgato.com/us/en",
+   "Elgato Explorer": "https://www.elgato.com/us/en/explorer/"
+  },
+  "Capture": {
+   "4K X": "https://www.elgato.com/us/en/p/game-capture-4k-x",
+   "4K Pro": "https://www.elgato.com/us/en/p/game-capture-4k-pro",
+   "Download 4K Capture Utility": "https://www.elgato.com/us/en/s/downloads"
+  },
+  "Setup and tips": {
+   "Elgato Explorer": "https://www.elgato.com/us/en/explorer/"
+  },
+  "Elgato and the team": {
+   "Elgato": "https://www.elgato.com/us/en"
+  }
+ },
+ "boilerplate": [
+  "https://www.youtube.com/@elgato",
+  "http://www.twitter.com/elgato",
+  "http://www.instagram.com/elgato",
+  "http://www.facebook.com/elgato",
+  "http://www.youtube.com/elgato",
+  "http://discord.gg/elgato"
+ ]
+}
