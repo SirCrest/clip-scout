@@ -31,21 +31,48 @@ PLAN_KEYS = {'id', 'key', 'hook_at', 'source_out', 'duration', 'key_in', 'prerol
              'source_url'}
 
 
-def keyframes(stream):
-    """Video keyframe times (seconds from the start of the file), cached in keyframes.json."""
+KEY_BEFORE, KEY_AFTER = 12.0, 15.0  # keyframe search window around a pick's first sentence
+
+
+def _windows(times):
+    spans = sorted((max(0.0, t - KEY_BEFORE), t + KEY_AFTER) for t in times)
+    merged = []
+    for a, b in spans:
+        if merged and a <= merged[-1][1]:
+            merged[-1][1] = max(merged[-1][1], b)
+        else:
+            merged.append([a, b])
+    return merged
+
+
+def keyframes(stream, near=()):
+    """Video keyframe times (seconds from the start of the file) near the given times, cached in keyframes.json.
+
+    Scanning a whole multi-hour file reads every byte of it, so only windows around each pick are read
+    (`-read_intervals`). keyframes.json is either a full list (older streams) or {"windows", "keys"}."""
     cached = stream.load('keyframes.json')
-    if cached is not None:
+    if isinstance(cached, list):
         return cached
+    cached = cached or {'windows': [], 'keys': []}
+    have = cached['windows']
+    missing = [w for w in _windows(near) if not any(a <= w[0] and w[1] <= b for a, b in have)]
+    if not missing:
+        return cached['keys']
     src = str(stream.media)
     start = subprocess.run(['ffprobe', '-v', 'error', '-show_entries', 'format=start_time', '-of', 'csv=p=0', src],
                            capture_output=True, text=True).stdout.strip()
     start = float(start) if start and start != 'N/A' else 0.0
-    out = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'packet=pts_time,flags',
-                          '-of', 'csv=p=0', src], capture_output=True, text=True).stdout
-    keys = sorted(round(float(t) - start, 3) for t, f, *_ in (line.split(',') for line in out.splitlines()
-                                                              if ',' in line) if 'K' in f and t != 'N/A')
-    stream.save('keyframes.json', keys)
-    return keys
+    keys = set(cached['keys'])
+    for i in range(0, len(missing), 200):  # keep the command line short
+        intervals = ','.join(f'{a + start:.3f}%{b + start:.3f}' for a, b in missing[i:i + 200])
+        out = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-read_intervals', intervals,
+                              '-show_entries', 'packet=pts_time,flags', '-of', 'csv=p=0', src],
+                             capture_output=True, text=True).stdout
+        keys |= {round(float(t) - start, 3) for t, f, *_ in (line.split(',') for line in out.splitlines()
+                                                              if ',' in line) if 'K' in f and t != 'N/A'}
+    cached = {'windows': sorted(have + missing), 'keys': sorted(keys)}
+    stream.save('keyframes.json', cached)
+    return cached['keys']
 
 
 def sentence_end(words, i):
@@ -225,7 +252,7 @@ def run(stream, progress=lambda f, note='': None):
     words = stream.words()
     if picks and not words:
         raise RuntimeError('picks.json has clips but transcript.json has no words')
-    keys = keyframes(stream) if picks else []
+    keys = keyframes(stream, [p['start'] for p in picks]) if picks else []
     progress(0.1, 'cut points')
     with lib.locked(stream.path('clips.json')):
         clips = build(stream, picks, words, keys, stream.clips())

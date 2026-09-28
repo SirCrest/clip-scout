@@ -9,7 +9,7 @@ import re
 from . import elgato, tasks
 from . import library as lib
 
-PART_CHARS = 200_000
+PART_CHARS = 90_000  # ~22k tokens: small enough that any agent reads a part in one or two passes
 CONTEXT_S = 180
 LINE = re.compile(r'^\[(\d\d:\d\d:\d\d)\s+([\d.]+)\]\s+(.*)$')
 TEXT_FIELDS = ('title', 'hook', 'summary', 'speakers', 'yt_description')

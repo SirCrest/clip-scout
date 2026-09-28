@@ -22,6 +22,9 @@ speakers from context; hosts and creators are usually named in the talk and the 
   whenever a line opens with So / But / And / Anyways / Okay / Um / Yeah before the real hook.
 - Where two openings are equally strong, prefer the one right after a `~ pause` line.
 - There is no minimum or maximum number of clips per stream. Capture every moment that might be good.
+- For calibration: on a staff demo or Q&A stream, a good pass finds roughly one moment every one to three
+  minutes of talk (a two-hour stream usually gives 40 to 90 picks, many of them 30 s to 3 min). Takeover and
+  gameplay streams give fewer. If you have far fewer, you are judging too early: pick, and let the judge cut.
 
 ## End clean
 - End after the thought fully lands: the answer is complete, the demo pays off, the laugh happens. Don't trail into
