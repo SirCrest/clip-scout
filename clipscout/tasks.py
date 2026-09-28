@@ -154,7 +154,10 @@ def validate(task, output):
 def submit(tid, agent_meta=None):
     """Validate and apply a task's output. Returns a list of errors (empty when accepted)."""
     task = load(tid)
-    if task['state'] == 'done':
+    if task['state'] == 'done':  # the agent already submitted it itself; still record who did the work
+        if agent_meta:
+            task.setdefault('runs', []).append(agent_meta)
+            _save(task)
         return []
     output, errors = read_output(tid)
     if not errors:

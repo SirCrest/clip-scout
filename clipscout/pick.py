@@ -139,8 +139,6 @@ def merge(stream):
         unique.setdefault((round(p['start'], 1), round(p['last'], 1), p.get('start_word')), p)
     stream.save('picks.json', sorted(unique.values(), key=lambda p: p['start']))
     stream.save('corrections.json', sorted(fixes, key=lambda f: f['t']))
-    try:
+    if stream.path('transcript.json').exists():
         from .transcribe import write_sentences
-    except ImportError:
-        return
-    write_sentences(stream)
+        write_sentences(stream)
