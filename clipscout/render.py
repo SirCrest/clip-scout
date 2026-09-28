@@ -245,13 +245,24 @@ def _two_lines(text):
     return ' '.join(words[:cut]) + '\n' + ' '.join(words[cut:])
 
 
+def _join(tokens):
+    """Words back into text: Whisper splits some words ("broadcast" "-ready", "2" ".0"); glue those back on."""
+    text = ''
+    for t in tokens:
+        text += t if text and re.match(r"^[-.'’][\w]", t) else (' ' + t if text else t)
+    return text
+
+
 def captions(words, segments, fixes=()):
     from . import edit, elgato
     kept = [w for w in words if not edit.is_filler(w['w'])]
     groups = cues(remap(kept, segments))
     lines = []
     for n, group in enumerate(groups):
-        text = ' '.join(x[2] for x in group).strip()
+        text = _join([x[2] for x in group]).strip()
+        after_sentence = n == 0 or groups[n - 1][-1][3]
+        if after_sentence and text[:1].islower():  # a cut can leave a sentence starting mid-way
+            text = text[0].upper() + text[1:]
         for f in fixes:
             text = text.replace(f['from'], f['to'])
         text = elgato.fix_names(text)

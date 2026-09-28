@@ -28,6 +28,14 @@ def test_captions_drop_fillers_fix_names_and_wrap():
     assert len(first) == 4 and all(len(line) <= 42 for line in first[2:])
 
 
+def test_captions_glue_split_words_and_capitalise_after_a_sentence():
+    words = [{'start': 1.0, 'end': 1.2, 'w': 'Done.'}, {'start': 1.3, 'end': 1.5, 'w': 'they'},
+             {'start': 1.6, 'end': 1.8, 'w': 'get'}, {'start': 1.9, 'end': 2.1, 'w': 'broadcast'},
+             {'start': 2.1, 'end': 2.3, 'w': '-ready'}, {'start': 2.4, 'end': 2.6, 'w': 'sound.'}]
+    srt = render.captions(words, [{'src_in': 0.9, 'src_out': 3, 'zoom': 1.0}])
+    assert 'They get broadcast-ready sound.' in srt
+
+
 def test_video_graph_selects_each_piece_and_overlays_the_zoom():
     lines = render.video_graph(SEGS, 0.0, FACTS, preview=False)
     graph = ';'.join(lines)
