@@ -20,7 +20,8 @@ Never upload, publish or post anything, and never delete media. Those need the u
 
 ## Working on the code
 
-- Python 3.12 via `uv` (`uv sync`, `uv run scout ...`, `uv run pytest`). Windows first; keep code Mac-ready.
+- Python 3.12 via `uv` (`uv sync --all-extras`, `uv run scout ...`, `uv run pytest`); a plain `uv sync` removes
+  the music and publish extras. Windows first; keep code Mac-ready.
 - `clipscout/`: `library.py` (on-disk format, read it first), `pipeline.py` (stages), `tasks.py` + `agents.py`
   (agent tasks and the CLI runners), one module per stage or task kind, `server.py` + `web/` (the app).
 - `clipscout/prompts/`: each task kind's instructions (`<kind>.md`) and answer format (`<kind>.schema.json`).
