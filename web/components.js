@@ -173,7 +173,7 @@ export function Strip({ wave, start, end, removed = [], nested = [], head, onSee
       <path class="st-wave" d=${wavePath(wave, W, wh, wy)} />
       ${estimate ? removed.map((m) => html`<rect class="st-est" x=${x(m.from)} y=${wy} width=${Math.max(1.5, x(m.to) - x(m.from))} height=${wh}><title>Quiet stretch: editing will likely take it out</title></rect>`)
       : removed.map((m) => { const a = x(m.from), w = Math.max(1.5, x(m.to) - a), cx = a + w / 2; return html`
-        <rect class=${`st-cut ${hover === m.id ? 'hover' : ''}`} x=${a} y=${wy} width=${w} height=${wh}><title>${m.reason || m.kind} · ${(m.to - m.from).toFixed(1)} s${onToggle ? ' · click to put back' : ''}</title></rect>
+        <rect class=${`st-cut ${hover === m.id ? 'hover' : ''} ${m.tight ? 'tight' : ''}`} x=${a} y=${wy} width=${w} height=${wh}><title>${m.reason || m.kind} · ${(m.to - m.from).toFixed(1)} s${m.tight ? ' · words run together here, give it a listen' : ''}${onToggle ? ' · click to put back' : ''}</title></rect>
         <line class="st-cutline" x1=${a} x2=${a} y1=${wy} y2=${wy + wh} /><line class="st-cutline" x1=${a + w} x2=${a + w} y1=${wy} y2=${wy + wh} />
         ${KIND_ICON[m.kind] ? html`<g transform=${`translate(${cx - 7} 0) scale(${14 / 24})`} style="fill:none;stroke:var(--tung);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M4 16h4c2.5 0 2.5-8 5.5-8H20M16.5 4.5L20 8l-3.5 3.5" /></g>`
           : m.kind === 'filler' ? html`<circle cx=${cx} cy="7" r="2.2" style="fill:var(--tung)" />`

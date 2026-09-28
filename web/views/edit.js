@@ -143,7 +143,8 @@ export function Edit({ ui, go }) {
         ${edl ? html`<div class="sec"><div class="sech"><${Icon} n="edit" /><span>Removed</span></div>
           ${Object.entries(edl.stats.removed || {}).map(([k, s]) => html`<div class="flag"><${Icon} n=${KIND[k]?.icon || 'cut'} />${KIND[k]?.t || k}<span class="num" style="margin-left:auto">${s.toFixed(1)} s</span></div>`)}</div>
         <div class="sec"><div class="sech"><${Icon} n="hardcut" /><span>Cuts</span></div>
-          <div class="cuts">${edl.cuts.map((k) => html`<div class="cutrow"><span class="num">${fmt.dur(k.at ?? 0)}</span><span title=${k.why}>${k.why}</span>
+          <div class="cuts">${edl.cuts.map((k) => html`<div class="cutrow"><button class="num" style="text-align:left" onClick=${() => player.current?.seekOut(Math.max(0, (k.at ?? 0) - 2))} title="Hear this cut">${fmt.dur(k.at ?? 0)}</button>
+            <span title=${k.tight ? 'The words run together here: give this cut a listen' : k.why} style=${k.tight ? 'color:var(--tung)' : ''}>${k.tight ? html`<${Icon} n="alert" /> ` : null}${k.why}</span>
             <div class="seg"><button class=${k.style === 'hard' ? 'on' : ''} title="Hard cut" onClick=${() => change({ style: { [k.i]: 'hard' } })}><${Icon} n="hardcut" /></button>
               <button class=${k.style === 'punch' ? 'on' : ''} title="Punch in" onClick=${() => change({ style: { [k.i]: 'punch' } })}><${Icon} n="punch" /></button></div></div>`)}
             ${!edl.cuts.length ? html`<span class="dim" style="font-size:12.5px">No cuts: it already flows.</span>` : null}</div></div>` : null}

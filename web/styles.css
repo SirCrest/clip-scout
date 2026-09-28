@@ -193,6 +193,10 @@ svg.strip { display: block; width: 100%; height: 88px; cursor: pointer; user-sel
 .st-wave.kept { fill: var(--text); fill-opacity: .82; }
 .st-cut { fill: var(--bg); fill-opacity: .78; }
 .st-cut.hover { fill: var(--tung-soft); fill-opacity: 1; }
+.st-cut.tight { stroke: var(--tung); stroke-width: 1.5; stroke-dasharray: 3 2; }
+.cutrow button.num { color: var(--faint); }
+.cutrow button.num:hover { color: var(--tung); }
+.cutrow .ic { width: 13px; height: 13px; vertical-align: -2px; }
 .st-cutline { stroke: var(--tung); stroke-opacity: .55; stroke-width: 1; }
 .st-drag { fill: var(--tung-soft); stroke: var(--tung); stroke-width: 1; stroke-dasharray: 3 2; }
 .st-head { stroke: var(--text); stroke-width: 1.5; }
