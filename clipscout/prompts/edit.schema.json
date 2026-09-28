@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Clip Scout edit answer",
+  "type": "object",
+  "required": ["clips"],
+  "additionalProperties": false,
+  "properties": {
+    "clips": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["clip", "layout", "punch_in_ok", "remove"],
+        "additionalProperties": false,
+        "properties": {
+          "clip": {"type": "string", "pattern": "^t[0-9]{6}[a-z]?$"},
+          "layout": {"enum": ["camera", "camera_graphics", "multi_cam", "screen", "product", "mixed"]},
+          "punch_in_ok": {"type": "boolean"},
+          "start": {"type": ["integer", "null"], "minimum": 0},
+          "end": {"type": ["integer", "null"], "minimum": 0},
+          "remove": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["from", "to", "reason"],
+              "additionalProperties": false,
+              "properties": {
+                "from": {"type": "integer", "minimum": 0},
+                "to": {"type": "integer", "minimum": 0},
+                "reason": {"type": "string", "minLength": 1, "maxLength": 120}
+              }
+            }
+          },
+          "keep": {"type": "array", "items": {"type": "string", "pattern": "^[pf][0-9]+$"}},
+          "styles": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["after_word", "style"],
+              "additionalProperties": false,
+              "properties": {
+                "after_word": {"type": "integer", "minimum": 0},
+                "style": {"enum": ["hard", "punch"]}
+              }
+            }
+          },
+          "note": {"type": "string", "maxLength": 240}
+        }
+      }
+    }
+  }
+}
