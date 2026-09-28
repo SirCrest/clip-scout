@@ -255,7 +255,7 @@ def _join(tokens):
 
 def captions(words, segments, fixes=()):
     from . import edit, elgato
-    kept = [w for w in words if not edit.is_filler(w['w'])]
+    kept = _fix_pairs([w for w in words if not edit.is_filler(w['w'])], elgato.fix_names)
     groups = cues(remap(kept, segments))
     lines = []
     for n, group in enumerate(groups):
@@ -271,6 +271,23 @@ def captions(words, segments, fixes=()):
         end = min(max(end + 0.2, start + 0.8), nxt - 0.02) if nxt > start + 0.3 else max(end, start + 0.3)
         lines.append(f'{n + 1}\n{srt_time(start)} --> {srt_time(end)}\n{_two_lines(text)}\n')
     return '\n'.join(lines)
+
+
+def _fix_pairs(words, fix):
+    """Name fixes that span two words ("Mark II" -> "MK.2", "Wave 3" -> "Wave:3") could fall on either side of a
+    caption break, so apply them to neighbouring word pairs first, merging a pair that becomes one token."""
+    out, i = [], 0
+    while i < len(words):
+        if i + 1 < len(words):
+            pair = f"{words[i]['w']} {words[i + 1]['w']}"
+            fixed = fix(pair)
+            if fixed != pair and ' ' not in fixed.strip():
+                out.append({**words[i], 'w': fixed.strip(), 'end': words[i + 1]['end']})
+                i += 2
+                continue
+        out.append(words[i])
+        i += 1
+    return out
 
 
 def _fixes(stream, a, b):

@@ -250,10 +250,31 @@ class Renderer(Loop):
                     return True
         return False
 
+    _last_stale = 0.0
+
+    def _requeue_stale(self):
+        """A kept clip whose edit plan changed after it was rendered (the agent's cuts arrived) renders again."""
+        if time.monotonic() - self._last_stale < 20:
+            return
+        self._last_stale = time.monotonic()
+        renders, queued = self.renders(), {q['key'] for q in self.queue}
+        for key, v in decisions.load()['decisions'].items():
+            r = renders.get(key)
+            if v['d'] != 'keep' or not r or key in queued or not r.get('edl_mtime'):
+                continue
+            sid, _, cid = key.partition('/')
+            try:
+                edl_file = catalog.stream(sid).path('edits') / f'{cid}.json'
+            except HTTPException:
+                continue
+            if edl_file.exists() and edl_file.stat().st_mtime_ns != r['edl_mtime']:
+                self.enqueue(key)
+
     def step(self):
         """First give every queued clip its edit plan (which opens the agent's edit task), then render the ones
         whose edits are settled."""
         from . import edit, render
+        self._requeue_stale()
         while True:
             with self.lock:
                 queue = list(self.queue)
