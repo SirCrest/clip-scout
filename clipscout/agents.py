@@ -82,10 +82,12 @@ def command(name, cfg, prompt):
         cmd += ['-m', model] if model else []
         cmd += ['-c', f'model_reasoning_effort={effort}'] if effort else []
         cmd += [prompt]
-    elif name == 'gemini':
-        cmd = ['gemini', '-p', prompt, '--yolo'] + (['-m', model] if model else [])
-    elif name == 'opencode':
-        cmd = ['opencode', 'run', prompt] + (['-m', model] if model else [])
+    elif name == 'gemini':  # geminicli.com/docs/cli/cli-reference: -p, -m, --approval-mode=yolo (replaces --yolo)
+        cmd = ['gemini', '--approval-mode=yolo'] + (['-m', model] if model else [])
+        cmd += ['--include-directories', str(lib.LIBRARY)] if outside else []
+        cmd += ['-p', prompt]
+    elif name == 'opencode':  # opencode.ai/docs/cli: `run [message]`, -m provider/model, --auto approves permissions
+        cmd = ['opencode', 'run', '--auto'] + (['-m', model] if model else []) + [prompt]
     elif name == 'custom':
         template = cfg.get('command') or ''
         if '{prompt}' not in template:

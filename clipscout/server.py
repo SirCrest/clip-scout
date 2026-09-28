@@ -665,7 +665,18 @@ def web(path: str):
     return FileResponse(target, headers={'Cache-Control': 'no-store'})  # small local files; always the current app
 
 
+def _warm_up():
+    """Import the heavy editing libraries now, so the first Keep doesn't wait on thousands of file reads."""
+    try:
+        from . import edit, render  # noqa: F401
+        import transformers  # noqa: F401
+        from transformers import Wav2Vec2ForCTC  # noqa: F401
+    except Exception as e:
+        activity.say(f'Editing libraries not available: {e}')
+
+
 def serve(port=8765, open_browser=True):
+    threading.Thread(target=_warm_up, daemon=True).start()
     for loop in (pipeline_loop, agent_loop, renderer):
         loop.start()
     kept = [k for k, v in decisions.load()['decisions'].items() if v['d'] == 'keep']
