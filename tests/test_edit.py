@@ -85,6 +85,17 @@ def test_agent_removal_trim_and_human_precedence(two_sentences):
     assert edl['source'] == 'human'
 
 
+def test_cut_between_run_together_words_is_flagged_tight():
+    words = sentence(1.0, ['you', 'want', 'mute.', 'Speaking', 'of', 'deals.', 'Back', 'to', 'it.'], step=0.25,
+                     dur=0.25)
+    lvl = level_for(words)  # no silence anywhere between the words
+    det = make_det(words)
+    agent = {'layout': 'camera', 'punch_in_ok': False, 'remove': [{'from': 3, 'to': 5, 'reason': 'plug'}]}
+    edl = edit.build(None, CLIP, det, agent=agent, lvl=lvl)
+    content = [r for r in edl['removed'] if r['kind'] == 'content']
+    assert content[0].get('tight') and any(c['tight'] for c in edl['cuts'])
+
+
 def test_voiced_sliver_is_kept_even_without_a_word():
     words = sentence(1.0, ['one', 'two.']) + sentence(3.0, ['three', 'four.'])
     lvl = level_for(words, voiced=[(2.1, 2.3)])  # a sound the transcript put nowhere

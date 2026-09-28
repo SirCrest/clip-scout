@@ -7,7 +7,8 @@ Per clip, in the stream folder's edits/:
   <clip id>.json         the edit decision list (EDL) that render.py follows:
     {"clip", "version", "source": "rules"|"agent"|"human", "layout", "punch_ok", "range": [in, out],
      "segments": [{"src_in", "src_out", "zoom"}], "removed": [{"id", "from", "to", "kind", "reason", "by"}],
-     "cuts": [{"i", "at", "from", "to", "style", "why"}], "stats", "agent", "human", "updated"}
+     "cuts": [{"i", "at", "from", "to", "style", "why", "tight"}], "stats", "agent", "human", "updated"}
+  `tight` marks a cut whose edge still lands in speech because the words run together: worth a listen.
   Removed kinds: pause and filler (rules), content (agent or person), trim (start or end moved in).
   The EDL is always rebuilt from detect + the agent's answer + the person's changes, so a later agent answer never
   overwrites what a person did.
@@ -428,16 +429,28 @@ def _quant(t, fps):
 
 
 def _snap_before(words, i, lvl):
-    """A quiet point just before word i (inside the gap from the previous word)."""
+    """A quiet point just before word i (inside the gap from the previous word). When the two words run together
+    there is no gap, so look a little wider for the dip between them."""
     w = words[i]
     prev_end = words[i - 1]['end'] if i > 0 else w['start'] - 0.3
-    return lvl.quietest(max(prev_end, w['start'] - 0.3), w['start'] + 0.02)
+    t = lvl.quietest(max(prev_end, w['start'] - 0.3), w['start'] + 0.02)
+    if lvl.at(t) > lvl.thr + 6:
+        t = lvl.quietest(max(prev_end - 0.08, w['start'] - 0.3), w['start'] + 0.08)
+    return t
 
 
 def _snap_after(words, i, lvl):
     w = words[i]
     next_start = words[i + 1]['start'] if i + 1 < len(words) else w['end'] + 0.3
-    return lvl.quietest(w['end'] - 0.02, min(next_start, w['end'] + 0.3))
+    t = lvl.quietest(w['end'] - 0.02, min(next_start, w['end'] + 0.3))
+    if lvl.at(t) > lvl.thr + 6:
+        t = lvl.quietest(w['end'] - 0.08, min(next_start + 0.08, w['end'] + 0.3))
+    return t
+
+
+def _tight(lvl, r):
+    """A cut whose edge still sits in speech (the words run together): worth a listen."""
+    return lvl.at(r['from']) > lvl.thr + 6 or lvl.at(r['to']) > lvl.thr + 6
 
 
 def build(stream, clip, det, agent=None, human=None, lvl=None):
@@ -497,6 +510,9 @@ def build(stream, clip, det, agent=None, human=None, lvl=None):
         removed.append({'id': f'h{n}', 'from': round(a, 3), 'to': round(b, 3), 'kind': 'content',
                         'reason': r.get('reason', 'removed by hand'), 'by': 'human'})
 
+    for r in removed:
+        if r['kind'] != 'trim' and _tight(lvl, r):
+            r['tight'] = True
     segments = _keep(t_in, t_out, [r for r in removed if r['kind'] != 'trim'], words, fps, lvl)
     punch_ok = bool(human['punch_ok']) if 'punch_ok' in human else bool(agent.get('punch_in_ok', False))
     layout = agent.get('layout', 'unknown')
@@ -512,6 +528,9 @@ def build(stream, clip, det, agent=None, human=None, lvl=None):
     for r in removed:
         by_kind[r['kind']] = round(by_kind.get(r['kind'], 0) + r['to'] - r['from'], 2)
     source = 'human' if human else 'agent' if agent else 'rules'
+    for c in cuts:  # a join is tight when a removal touching it is
+        c['tight'] = any(r.get('tight') and (abs(r['from'] - c['from']) < 0.05 or abs(r['to'] - c['to']) < 0.05)
+                         for r in removed)
     return {'clip': clip['id'], 'version': VERSION, 'det_sig': det.get('sig'), 'source': source, 'layout': layout,
             'punch_ok': punch_ok,
             'range': [round(t_in, 3), round(t_out, 3)], 'segments': segments, 'removed': removed, 'cuts': cuts,
