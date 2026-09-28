@@ -28,6 +28,14 @@ def test_custom_needs_a_prompt_placeholder(library):
         agents.command('custom', {'command': 'mytool --go'}, 'x')
 
 
+def test_answer_from_stdout():
+    fenced = 'Here you go:\n```json\n{"corrections": [], "picks": []}\n```\nDone.'
+    assert agents.answer_from_stdout(fenced) == {'corrections': [], 'picks': []}
+    bare = 'Thinking...\n[{"id": "t000100", "bin": "top"}]\n'
+    assert agents.answer_from_stdout(bare) == [{'id': 't000100', 'bin': 'top'}]
+    assert agents.answer_from_stdout('no json here {not json}') is None
+
+
 def test_prompt_is_one_plain_line(library):
     text = agents.prompt_for('pick-tw1-p1', retry=True)
     assert '\n' not in text and '"' not in text and 'errors.txt' in text

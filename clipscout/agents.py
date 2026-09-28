@@ -132,6 +132,29 @@ def usage(name, stdout):
     return {k: v for k, v in out.items() if v not in (None, [], '')}
 
 
+def answer_from_stdout(stdout):
+    """The JSON answer an agent printed instead of writing output.json (harnesses without file tools do this):
+    the last fenced ```json block, else the last top-level JSON object or array that parses."""
+    import re
+    blocks = re.findall(r'```(?:json)?\s*([\[{].*?[\]}])\s*```', stdout, re.S)
+    for text in reversed(blocks):
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError:
+            pass
+    decoder = json.JSONDecoder()
+    found = None
+    for i, ch in enumerate(stdout):
+        if ch in '[{' and (i == 0 or stdout[i - 1] in '\n\r '):
+            try:
+                value, _ = decoder.raw_decode(stdout[i:])
+            except json.JSONDecodeError:
+                continue
+            if isinstance(value, (dict, list)) and value:
+                found = value
+    return found
+
+
 def run_task(task, name, cfg, log=print):
     """Run the agent on one claimed task until it's accepted or MAX_ATTEMPTS runs fail. Returns True if done."""
     tid = task['id']
@@ -150,6 +173,12 @@ def run_task(task, name, cfg, log=print):
         meta = {'agent': name, 'model': cfg.get('model') or 'default', 'effort': cfg.get('effort') or 'default',
                 'attempt': attempt, 'seconds': round(time.monotonic() - started), 'exit': code,
                 **usage(name, stdout or '')}
+        out_file = folder / 'output.json'
+        if not out_file.exists() and name not in ('claude', 'codex'):  # stdout of claude/codex is event JSON
+            printed = answer_from_stdout(stdout or '')
+            if printed is not None:
+                lib.write_json(out_file, printed)
+                meta['from_stdout'] = True
         errors = tasks.submit(tid, meta)
         if not errors:
             log(f'{tid}: done by {name} in {meta["seconds"]}s (attempt {attempt})')
