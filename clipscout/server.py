@@ -380,8 +380,17 @@ async def api_post(request: Request):
 
 @app.post('/api/merge')
 async def api_merge(request: Request):
-    decisions.add_merge((await body(request))['keys'])
-    return {'ok': True}
+    from .merge import make_clip
+    keys = (await body(request))['keys']
+    sids = {k.split('/')[0] for k in keys}
+    if len(sids) != 1:
+        raise HTTPException(400, 'clips to combine must come from one stream')
+    try:
+        merged = make_clip(catalog.stream(sids.pop()), [k.split('/')[1] for k in keys])
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    decisions.add_merge(keys)
+    return {'ok': True, 'key': merged['key']}
 
 
 @app.get('/api/tasks')
