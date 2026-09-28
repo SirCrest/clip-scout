@@ -98,7 +98,12 @@ def check_library():
         return [(FAIL, f'library not writable: {lib.LIBRARY} ({e})')]
     free = shutil.disk_usage(lib.LIBRARY).free / 2**30
     status = OK if free > 50 else WARN
-    return [(status, f'library {lib.LIBRARY} ({free:,.0f} GB free{"; a stream needs ~5-15 GB" if free <= 50 else ""})')]
+    rows = [(status, f'library {lib.LIBRARY} ({free:,.0f} GB free{"; a stream needs ~5-15 GB" if free <= 50 else ""})')]
+    from .media import is_fragmented
+    slow = [s for s in lib.all_streams() if s.media and is_fragmented(s.media)]
+    if slow:
+        rows.append((WARN, f'{len(slow)} source videos are fragmented and open slowly: run `scout media --fix`'))
+    return rows
 
 
 def checks():

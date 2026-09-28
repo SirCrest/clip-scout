@@ -50,6 +50,10 @@ def main(argv=None):
 
     sub.add_parser('doctor', help='check ffmpeg, GPU, transcription model and agent CLIs')
 
+    a = sub.add_parser('media', help='find (and with --fix, losslessly remux) fragmented source videos that open slowly')
+    a.add_argument('ids', nargs='*')
+    a.add_argument('--fix', action='store_true')
+
     a = sub.add_parser('bench', help="score the judge against staff-approved clips")
     a.add_argument('--verbose', action='store_true')
 
@@ -99,6 +103,18 @@ def dispatch(args):
     elif cmd == 'doctor':
         from .doctor import run
         return run()
+    elif cmd == 'media':
+        from . import library, media
+        streams = [library.get_stream(i) for i in args.ids] if args.ids else library.all_streams()
+        slow = [s for s in streams if s.media and media.is_fragmented(s.media)]
+        print(f'{len(slow)} of {len(streams)} source videos are fragmented' + (':' if slow else '.'))
+        for s in slow:
+            if not args.fix:
+                print(f'  {s.id}  {s.title[:60]}')
+                continue
+            print(f'  {s.id}  fixing…', flush=True)
+            media.fix_stream(s)
+            print(f'  {s.id}  done')
     elif cmd == 'bench':
         from .bench import run
         run(verbose=args.verbose)

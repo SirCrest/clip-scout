@@ -179,6 +179,8 @@ def fetch(stream, progress=lambda fraction, note='': None):
             _copy(src, dest, progress)
     elif not stream.media or not stream.media.exists():
         _download(stream, progress)
+    from .media import fix_stream  # fragmented MP4s open slowly everywhere: put the index up front, losslessly
+    fix_stream(stream, lambda f, note='': progress(0.9 + 0.1 * f, note))
     duration = probe_duration(stream.media)
     if duration <= 0:
         raise ValueError(f'{stream.media.name} has no readable duration; is it a video file?')
