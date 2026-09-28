@@ -53,6 +53,7 @@ export function Settings() {
 
     <section class="panel sp-card">
       <h3><${Icon} n="ready" />This computer</h3>
+      ${!health ? html`<div class="line dim"><${Icon} n="spinner" cls="spin" /><span>Checking ffmpeg, the GPU, the model and your agents…</span></div>` : null}
       <ul class="health">${(health || []).map((h) => html`<li class=${h.status}><${Icon} n=${h.status === 'ok' ? 'check' : h.status === 'fail' ? 'alert' : 'minus'} /><span>${h.text}</span></li>`)}</ul>
       <div class="form"><label>Look</label><div class="seg">${[['system', 'sliders'], ['dark', 'moon'], ['light', 'sun']].map(([t, i]) => html`
         <button class=${theme === t ? 'on' : ''} onClick=${() => setTheme(t)} title=${t}><${Icon} n=${i} /></button>`)}</div></div>

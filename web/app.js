@@ -16,6 +16,8 @@ const SPACES = [
   { k: 'publish', icon: 'upload', t: 'Publish' },
 ];
 const AGENT_NAME = { claude: 'Claude Code', codex: 'Codex', gemini: 'Gemini CLI', opencode: 'opencode', custom: 'Your agent' };
+const BADGE_WORD = { ingest: 'streams in progress', review: 'top picks to sort', edit: 'maybes waiting for you', publish: '' };
+const compact = (n) => (n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}k` : String(n));
 const KIND_WORD = { pick: 'finding clips', judge: 'judging', edit: 'tightening edits', titles: 'writing titles' };
 
 function App() {
@@ -79,13 +81,14 @@ function App() {
   return html`
     <header class="top">
       <div class="brand"><${Icon} n="find" /><span>Clip Scout</span></div>
-      <nav class="spaces" aria-label="Spaces">${SPACES.map((x) => html`<button class=${`space-btn ${space === x.k ? 'on' : ''}`} onClick=${() => go(x.k)} title=${x.t} aria-label=${x.t}>
-        <${Icon} n=${x.icon} /><span class="label">${x.t}</span>${badges[x.k] ? html`<span class=${`badge ${x.k === 'review' ? 'quiet' : ''} num`}>${badges[x.k] > 999 ? '999+' : badges[x.k]}</span>` : null}</button>`)}</nav>
+      <nav class="spaces" aria-label="Spaces">${SPACES.map((x) => html`<button class=${`space-btn ${space === x.k ? 'on' : ''}`} onClick=${() => go(x.k)}
+          title=${badges[x.k] ? `${x.t}: ${badges[x.k]} ${BADGE_WORD[x.k]}` : x.t} aria-label=${x.t}>
+        <${Icon} n=${x.icon} /><span class="label">${x.t}</span>${badges[x.k] ? html`<span class=${`badge ${x.k === 'review' ? 'quiet' : ''} num`}>${compact(badges[x.k])}</span>` : null}</button>`)}</nav>
       ${space === 'review' && streams.length ? html`<label class="stream-pick"><select value=${sid} onChange=${(e) => setSid(e.target.value)} aria-label="Stream"
           style="background:none;border:0;color:inherit;max-width:360px;text-overflow:ellipsis">
           <option value="">All streams</option>${streams.map((x) => html`<option value=${x.id}>${x.date.slice(5)} · ${x.title}</option>`)}</select></label>` : null}
-      <div class="meter" title="Sorted today, and top picks still to sort">
-        <div class="bar"><i style=${`width:${sortedToday + topLeft ? (sortedToday / (sortedToday + topLeft)) * 100 : 0}%`}></i></div>
+      <div class="meter" title="Clips you've sorted today, out of today's plus the top picks still to sort">
+        <${Icon} n="check" cls="dim" /><div class="bar"><i style=${`width:${sortedToday + topLeft ? (sortedToday / (sortedToday + topLeft)) * 100 : 0}%`}></i></div>
         <span class="num">${sortedToday}<span class="dim"> / ${sortedToday + topLeft}</span></span></div>
       ${running.length ? html`<button class="pulse" onClick=${() => go('settings')} title="Your agent is working">
         <i></i><${Icon} n="agent" /><span>${AGENT_NAME[ov.agent.name] || ov.agent.name} · ${KIND_WORD[running[0].kind] || 'working'}${running.length > 1 ? ` +${running.length - 1}` : ''}</span></button>` : null}

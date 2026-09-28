@@ -65,7 +65,7 @@ a { color: inherit; }
 .space-btn.on { color: var(--text); background: var(--raised); box-shadow: inset 0 -2px 0 var(--tung); }
 .space-btn .ic { width: 19px; height: 19px; }
 .space-btn .label { display: none; }
-@media (min-width: 1500px) { .space-btn .label { display: inline; } }
+@media (min-width: 1180px) { .space-btn .label { display: inline; } }
 .badge { min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--tung); color: var(--tung-ink);
   font-size: 11px; font-weight: 650; display: grid; place-items: center; }
 .badge.quiet { background: var(--raised); color: var(--muted); box-shadow: inset 0 0 0 1px var(--line); }
@@ -95,6 +95,11 @@ a { color: inherit; }
 .seg button:hover { color: var(--text); }
 .seg button.on { color: var(--text); background: var(--raised); }
 .seg .ic { width: 17px; height: 17px; }
+.seg button .lbl { display: none; }
+.seg button.on .lbl { display: inline; }
+.d .lbl { font-size: 13px; }
+.d.cut .lbl, .d.maybe .lbl { font-size: 12.5px; }
+.st-est { fill: var(--faint); fill-opacity: .22; }
 .lane-btn { display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 5px; color: var(--muted); font-size: 13px; }
 .lane-btn.on { background: var(--raised); color: var(--text); box-shadow: inset 0 -2px 0 var(--lc); }
 .lane-btn .ic { color: var(--lc); width: 18px; height: 18px; }
@@ -209,9 +214,9 @@ svg.strip { display: block; width: 100%; height: 88px; cursor: pointer; user-sel
 .d:active { transform: scale(.97); }
 .d .ic { width: 22px; height: 22px; }
 .d kbd { position: absolute; right: 7px; top: 5px; font: inherit; font-size: 10.5px; opacity: .55; font-stretch: 90%; }
-.d.cut { width: 84px; color: var(--muted); box-shadow: inset 0 0 0 1px var(--line); }
+.d.cut { width: 96px; color: var(--muted); box-shadow: inset 0 0 0 1px var(--line); }
 .d.cut:hover { color: var(--text); box-shadow: inset 0 0 0 1px var(--muted); }
-.d.maybe { width: 84px; color: var(--tung); background: linear-gradient(90deg, var(--tung-soft) 50%, transparent 50%); box-shadow: inset 0 0 0 1px var(--tung); }
+.d.maybe { width: 108px; color: var(--tung); background: linear-gradient(90deg, var(--tung-soft) 50%, transparent 50%); box-shadow: inset 0 0 0 1px var(--tung); }
 .d.keep { width: 168px; background: var(--tung); color: var(--tung-ink); font-weight: 600; }
 .d.keep:hover { filter: brightness(1.07); }
 .d.on { outline: 2px solid var(--text); outline-offset: 3px; }

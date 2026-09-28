@@ -134,7 +134,7 @@ function wavePath(peaks, W, H, y0, x0 = 0, x1 = W) {
 
 const KIND_ICON = { content: 'tangent', fumble: 'fumble', tangent: 'tangent' };
 
-export function Strip({ wave, start, end, removed = [], nested = [], head, onSeek, onToggle, onRemove, interactive }) {
+export function Strip({ wave, start, end, removed = [], nested = [], head, onSeek, onToggle, onRemove, interactive, estimate }) {
   const box = useRef(null);
   const W = useWidth(box) || 600, H = 88, wy = 16, wh = 54;
   const len = Math.max(0.1, end - start);
@@ -171,7 +171,8 @@ export function Strip({ wave, start, end, removed = [], nested = [], head, onSee
       onPointerMove=${(e) => { const r = box.current.getBoundingClientRect(), px = e.clientX - r.left; setHover(removed.find((m) => px >= x(m.from) - 2 && px <= x(m.to) + 2)?.id || null); }}
       onPointerLeave=${() => setHover(null)} aria-label="The clip's sound and its edits">
       <path class="st-wave" d=${wavePath(wave, W, wh, wy)} />
-      ${removed.map((m) => { const a = x(m.from), w = Math.max(1.5, x(m.to) - a), cx = a + w / 2; return html`
+      ${estimate ? removed.map((m) => html`<rect class="st-est" x=${x(m.from)} y=${wy} width=${Math.max(1.5, x(m.to) - x(m.from))} height=${wh}><title>Quiet stretch: editing will likely take it out</title></rect>`)
+      : removed.map((m) => { const a = x(m.from), w = Math.max(1.5, x(m.to) - a), cx = a + w / 2; return html`
         <rect class=${`st-cut ${hover === m.id ? 'hover' : ''}`} x=${a} y=${wy} width=${w} height=${wh}><title>${m.reason || m.kind} · ${(m.to - m.from).toFixed(1)} s${onToggle ? ' · click to put back' : ''}</title></rect>
         <line class="st-cutline" x1=${a} x2=${a} y1=${wy} y2=${wy + wh} /><line class="st-cutline" x1=${a + w} x2=${a + w} y1=${wy} y2=${wy + wh} />
         ${KIND_ICON[m.kind] ? html`<g transform=${`translate(${cx - 7} 0) scale(${14 / 24})`} style="fill:none;stroke:var(--tung);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M4 16h4c2.5 0 2.5-8 5.5-8H20M16.5 4.5L20 8l-3.5 3.5" /></g>`

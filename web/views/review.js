@@ -7,11 +7,11 @@ import { state, binList, decisionOf, decide, setReason, markSeen, childrenOf, me
 import { Card, Player, Strip, Timeline, Stars, quietRuns, useWidth } from '../components.js';
 
 const BINS = [
-  { k: 'top', icon: 'top', t: 'Top picks, best first' },
-  { k: 'effort', icon: 'layers', t: 'Best effort' },
-  { k: 'spot', icon: 'spot', t: 'Spot check: a few clips the judge set aside' },
-  { k: 'seen', icon: 'eye', t: 'Seen but not sorted' },
-  { k: 'sorted', icon: 'check', t: 'Sorted, newest first' },
+  { k: 'top', icon: 'top', l: 'Top', t: 'Top picks, best first' },
+  { k: 'effort', icon: 'layers', l: 'Effort', t: 'Best effort' },
+  { k: 'spot', icon: 'spot', l: 'Spot check', t: 'Spot check: a few clips the judge set aside' },
+  { k: 'seen', icon: 'eye', l: 'Seen', t: 'Seen but not sorted' },
+  { k: 'sorted', icon: 'check', l: 'Sorted', t: 'Sorted, newest first' },
 ];
 const SPEEDS = [1, 1.25, 1.5, 2];
 const details = new Map(), waves = new Map();
@@ -193,12 +193,12 @@ export function Review({ ui, go }) {
         <button class=${`lane-btn yt ${dest === 'yt' ? 'on' : ''}`} onClick=${() => setDest('yt')} title="Staff clips for the Elgato Clips YouTube channel"><${Icon} n="yt" /><span class="num">${counts.yt}</span></button>
         <button class=${`lane-btn x ${dest === 'x' ? 'on' : ''}`} onClick=${() => setDest('x')} title="Community clips for X"><${Icon} n="x" /><span class="num">${counts.x}</span></button>
         <span class="sp"></span>
-        <div class="seg">${BINS.map((b) => html`<button class=${bin === b.k ? 'on' : ''} title=${b.t} aria-label=${b.t} onClick=${() => setBin(b.k)}><${Icon} n=${b.icon} /></button>`)}</div>
+        <div class="seg">${BINS.map((b) => html`<button class=${bin === b.k ? 'on' : ''} title=${b.t} aria-label=${b.t} onClick=${() => setBin(b.k)}><${Icon} n=${b.icon} /><span class="lbl">${b.l}</span></button>`)}</div>
       </div>
       <div class="bin-sub">
         <${Icon} n="search" /><input class="q" placeholder="Search" value=${ui.query} onInput=${(e) => ui.setQuery(e.target.value)} />
         <select value=${topic} onChange=${(e) => setTopic(e.target.value)} aria-label="Topic"><option value="">All topics</option>${topics.map((t) => html`<option>${t}</option>`)}</select>
-        <button class="ib" style="width:26px;height:26px" title=${hideSeen ? 'Showing only clips you haven\'t seen' : 'Showing every clip'} onClick=${() => setHideSeen(!hideSeen)}><${Icon} n="eye" cls=${hideSeen ? '' : 'faint'} /></button>
+        <button class="ib" style="width:26px;height:26px" title=${hideSeen ? 'Showing only clips you haven\'t seen' : 'Showing every clip'} onClick=${() => setHideSeen(!hideSeen)}><${Icon} n=${hideSeen ? 'eyeoff' : 'eye'} /></button>
         <span class="prog num">${visible.length}</span>
       </div>
       <div class="scroll" style="flex:1">
@@ -221,7 +221,7 @@ export function Review({ ui, go }) {
             <span class="kinds">${kids.length ? html`<span title="Shorter clips inside this one"><${Icon} n="nested" /><span class="num">${kids.length}</span></span>` : null}
               <span title="Where it is in the stream"><${Icon} n="clock" /><span class="num">${fmt.dur(sel.hook)}</span></span></span>
           </div>
-          <${Strip} wave=${w?.peaks} start=${sel.hook} end=${sel.out} removed=${quiet} head=${head.src}
+          <${Strip} wave=${w?.peaks} start=${sel.hook} end=${sel.out} removed=${quiet} estimate head=${head.src}
             nested=${kids.map((k) => ({ a: k.hook, b: k.out }))} onSeek=${(t) => player.current?.seekSource(t)} />
           ${d?.hook ? html`<div class="callout"><${Icon} n="find" /><q>${d.hook}</q></div>` : null}
         </div>
@@ -233,8 +233,8 @@ export function Review({ ui, go }) {
             <button class="spd num" onClick=${() => setSpeed((v) => SPEEDS[(SPEEDS.indexOf(v) + 1) % SPEEDS.length])} title="Speed (S)">${speed}×</button>
           </div>
           <div class="dec">
-            <button class=${`d cut ${decisionOf(sel.key) === 'cut' ? 'on' : ''}`} onClick=${() => onDecide('cut')} aria-label="Cut" title="Cut: not for our channels"><${Icon} n="cut" /><kbd>X</kbd></button>
-            <button class=${`d maybe ${decisionOf(sel.key) === 'maybe' ? 'on' : ''}`} onClick=${() => onDecide('maybe')} aria-label="Maybe" title="Maybe: worth posting after careful editing"><${Icon} n="maybe" /><kbd>M</kbd></button>
+            <button class=${`d cut ${decisionOf(sel.key) === 'cut' ? 'on' : ''}`} onClick=${() => onDecide('cut')} aria-label="Cut" title="Cut: not for our channels"><${Icon} n="cut" /><span class="lbl">Cut</span><kbd>X</kbd></button>
+            <button class=${`d maybe ${decisionOf(sel.key) === 'maybe' ? 'on' : ''}`} onClick=${() => onDecide('maybe')} aria-label="Maybe" title="Maybe: worth posting after careful editing"><${Icon} n="maybe" /><span class="lbl">Maybe</span><kbd>M</kbd></button>
             <button class=${`d keep ${decisionOf(sel.key) === 'keep' ? 'on' : ''}`} onClick=${() => onDecide('keep')} aria-label="Keep"><${Icon} n="keep" /><span>Keep</span><kbd>K</kbd></button>
           </div>
           ${ask ? html`<div class="reasons" role="group" aria-label=${ask.dec === 'cut' ? 'Why cut?' : 'What does it need?'}>
