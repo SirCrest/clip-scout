@@ -4,6 +4,19 @@
   "required": ["corrections", "picks"],
   "additionalProperties": false,
   "properties": {
+    "skipped": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "why"],
+        "additionalProperties": false,
+        "properties": {
+          "from": {"type": "number"},
+          "to": {"type": "number"},
+          "why": {"type": "string", "minLength": 3}
+        }
+      }
+    },
     "corrections": {
       "type": "array",
       "items": {

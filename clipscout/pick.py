@@ -9,7 +9,8 @@ import re
 from . import elgato, tasks
 from . import library as lib
 
-PART_CHARS = 90_000  # ~22k tokens: small enough that any agent reads a part in one or two passes
+PART_CHARS = 60_000  # ~15k tokens, ~40 min of talk: small enough that any agent reads a part in full
+GAP_MAX, GAP_WORDS = 480, 700  # a stretch this long and this talky with no pick needs a pick or a reason
 CONTEXT_S = 180
 LINE = re.compile(r'^\[(\d\d:\d\d:\d\d)\s+([\d.]+)\]\s+(.*)$')
 TEXT_FIELDS = ('title', 'hook', 'summary', 'speakers', 'yt_description')
@@ -139,7 +140,31 @@ def check(task, output):
             errors.append(f"picks/{i}: product {p['product']!r} is not in the product list")
         if p['score'] < 2:
             errors.append(f'picks/{i}: score 1 picks should be left out')
+    errors += _gaps(order, text, lo, hi, output)
     return errors[:40]
+
+
+def _gaps(order, text, lo, hi, output):
+    """Long, talky stretches with no pick: agents sometimes skim past part of a transcript. Each needs picks or an
+    entry in `skipped` saying why nothing there fits."""
+    body = text.split('--- CONTEXT', 1)[0]
+    mine = [(t, s) for t, s in parse_sentences(body) if hi is None or t < hi]
+    if not mine:
+        return []
+    covered = sorted((round(p['start'], 2), round(p['last'], 2)) for p in output['picks'])
+    skipped = [(s['from'], s['to']) for s in output.get('skipped', [])]
+    errors, cursor = [], mine[0][0]
+    for a, b in covered + [(mine[-1][0] + 1, mine[-1][0] + 1)]:
+        if a - cursor > GAP_MAX:
+            words = sum(len(s.split()) for t, s in mine if cursor < t < a)
+            explained = any(sa <= cursor + 60 and sb >= a - 60 for sa, sb in skipped)
+            if words >= GAP_WORDS and not explained:
+                errors.append(f'no picks from {lib.hms(cursor)} ({cursor:.2f}) to {lib.hms(a)} ({a:.2f}): '
+                              f'{(a - cursor) / 60:.0f} min and {words} words of talk. Read that stretch again and '
+                              f'pick every moment that fits the guide; if truly nothing does, add '
+                              f'{{"from": {cursor:.2f}, "to": {a:.2f}, "why": "..."}} to "skipped"')
+        cursor = max(cursor, b)
+    return errors
 
 
 def apply_task(task, output):

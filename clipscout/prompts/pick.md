@@ -56,7 +56,10 @@ One JSON object:
 - `yt_titles`: three distinct YouTube title options, at most 70 characters each, each a different angle.
 - `yt_description`: 2-4 sentences, no links, no invented specs or prices.
 
-If a part of the stream has nothing worth picking, answer with an empty `picks` list.
+Cover the whole part: every stretch of talk gets read and considered. A long stretch with no picks (more than about
+eight minutes of talk) needs a reason: add `"skipped": [{"from": 3146.0, "to": 3807.0, "why": "giveaway rules and
+raid shout-outs"}]` (times as printed). If a whole part has nothing worth picking, answer with an empty `picks`
+list and one `skipped` entry for it.
 
 ---
 
