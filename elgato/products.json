@@ -1,0 +1,24 @@
+{
+ "topics": {
+  "Stream Deck": ["Stream Deck", "Stream Deck +", "Stream Deck + XL", "Stream Deck XL", "Stream Deck Neo", "Stream Deck Mini", "Stream Deck Pedal", "Stream Deck Mobile", "Stream Deck Studio", "Stream Deck Software", "Galleon 100 SD"],
+  "Marketplace and plugins": ["Marketplace", "Marketplace Connect"],
+  "Wave Link and audio software": ["Wave Link", "Wave Next", "Voice Focus", "Wave FX", "Wave Cast"],
+  "Microphones and audio gear": ["Wave:3", "Wave:3 MK.2", "Wave DX", "Wave XLR", "Wave XLR Pro", "XLR Dock", "Wave Neo", "Wave Mic Arm", "Wave Mic Arm LP", "Wave Mic Arm Pro"],
+  "Cameras": ["Facecam", "Facecam 4K", "Facecam MK.2", "Facecam Pro", "Camera Hub", "Cam Link", "Neo"],
+  "Prompter": ["Prompter", "Prompter XL"],
+  "Lighting": ["Key Light", "Key Light Air", "Key Light Mini", "Light Strip", "Ring Light", "Lighting", "Green Screen"],
+  "Capture": ["Game Capture", "4K X", "4K S", "4K Pro", "HD60 X", "Chat Link Pro"],
+  "Setup and tips": ["Setup", "Streaming Tips", "Multi Mount", "Elgato Studio"],
+  "Elgato and the team": ["Elgato"],
+  "Community": ["Community"]
+ },
+ "name_fixes": [
+  ["\\bBurrito\\b", "Brito"], ["\\bFrito\\b", "Brito"], ["\\bBrita\\b", "Brito"],
+  ["\\bStefan\\b", "Stephan"], ["\\bDominic\\b", "Dominik"], ["\\bJanik\\b", "Yannick"],
+  ["\\bCosmic ?Quartz\\b|\\bCosmicQuarts\\b", "cosmicquarts"],
+  ["\\b(2XChili|TooChilly|2Chili)\\b", "2xChili"],
+  ["\\bMelon(z)?lord\\b", "mellonzlord"], ["\\bCopa ?Caxi\\b|\\bKopa Kaxi\\b", "copacaxi"],
+  ["\\bWave ?3\\b(?!\\.)", "Wave:3"], ["\\bWavelink\\b", "Wave Link"], ["\\bStream Deck Plus\\b", "Stream Deck +"],
+  ["\\bMark II\\b|\\bMk ?2\\b", "MK.2"]
+ ]
+}
