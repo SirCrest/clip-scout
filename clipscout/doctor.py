@@ -90,14 +90,19 @@ def check_library():
     return [(status, f'library {lib.LIBRARY} ({free:,.0f} GB free{"; a stream needs ~5-15 GB" if free <= 50 else ""})')]
 
 
-def run():
-    print('Clip Scout doctor')
+def checks():
     rows = []
     for check in (check_ffmpeg, check_gpu, check_model, check_torch, check_agents, check_library):
         try:
             rows += check()
         except Exception as e:
             rows.append((WARN, f'{check.__name__[6:]} check failed: {e}'))
+    return rows
+
+
+def run():
+    print('Clip Scout doctor')
+    rows = checks()
     for status, text in rows:
         print(f'  {status:3} {text}')
     failed = [r for r in rows if r[0] == FAIL]

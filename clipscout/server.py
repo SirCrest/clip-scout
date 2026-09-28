@@ -389,6 +389,12 @@ def api_tasks():
     return tasks.list_tasks()
 
 
+@app.get('/api/health')
+def api_health():
+    from .doctor import checks
+    return [{'status': {'ok': 'ok', '--': 'warn', 'NO': 'fail'}[s], 'text': t} for s, t in checks()]
+
+
 @app.get('/api/settings')
 def api_settings():
     return {**agents.settings(), 'available': agents.available()}
