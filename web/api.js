@@ -32,6 +32,7 @@ export const api = {
   edit: (key) => get(`/api/edit/${key}`),
   saveEdit: (key, changes) => post(`/api/edit/${key}`, changes),
   render: (key) => post(`/api/render/${key}`),
+  renders: () => get('/api/renders'),
   reveal: (key) => post('/api/reveal', { key }),
   publish: () => get('/api/publish'),
   publishAction: (action, body = {}) => post(`/api/publish/${action}`, body),

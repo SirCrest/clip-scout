@@ -293,13 +293,17 @@ async def body(request):
 def overview():
     streams = []
     kept = {k for k, v in decisions.load()['decisions'].items() if v['d'] == 'keep'}
+    rendered = set(Renderer.renders())
     for _, s, cs in catalog._load():
         streams.append({
             'id': s.id, 'title': s.title, 'date': s.date, 'duration': s.meta.get('duration'),
             'source': {k: s.meta.get('source', {}).get(k) for k in ('kind', 'url')},
             'stages': {n: s.stage(n) for n in lib.STAGES},
             'clips': len(cs), 'top': sum((c.get('judge') or {}).get('bin') == 'top' for c in cs),
-            'kept': sum(c['key'] in kept for c in cs), 'added': s.meta.get('added'),
+            'kept': sum(c['key'] in kept for c in cs), 'rendered': sum(c['key'] in rendered for c in cs),
+            'judged': sum(bool(c.get('judge')) for c in cs), 'added': s.meta.get('added'),
+            'poster': next((c['key'] for c in sorted(cs, key=lambda c: -((c.get('judge') or {}).get('stars') or 0))
+                            if (c.get('judge') or {}).get('bin') == 'top'), cs[0]['key'] if cs else None),
         })
     all_tasks = tasks.list_tasks()
     count = {st: sum(t['state'] == st for t in all_tasks) for st in ('open', 'claimed', 'done', 'failed')}
@@ -391,6 +395,11 @@ async def api_merge(request: Request):
         raise HTTPException(400, str(e))
     decisions.add_merge(keys)
     return {'ok': True, 'key': merged['key']}
+
+
+@app.get('/api/renders')
+def api_renders():
+    return Renderer.renders()
 
 
 @app.get('/api/tasks')
@@ -619,7 +628,7 @@ def web(path: str):
     target = (WEB / path).resolve() if path else WEB / 'index.html'
     if not target.is_relative_to(WEB.resolve()) or not target.is_file():
         target = WEB / 'index.html'
-    return FileResponse(target, headers={'Cache-Control': 'no-cache'})
+    return FileResponse(target, headers={'Cache-Control': 'no-store'})  # small local files; always the current app
 
 
 def serve(port=8765, open_browser=True):

@@ -113,10 +113,10 @@ export function lane(clip) {
 }
 
 // The clips a reviewer sees in one bin, in the order they see them.
-export function binList(bin, { dest, topic, query, hideSeen }) {
+export function binList(bin, { dest, topic, query, hideSeen, sid }) {
   const seen = state.decisions.seen;
   const q = (query || '').trim().toLowerCase();
-  let list = state.clips.filter((c) => lane(c) === dest && !c.inside);
+  let list = state.clips.filter((c) => lane(c) === dest && !c.inside && (!sid || c.sid === sid));
   if (topic) list = list.filter((c) => c.topic === topic);
   if (q) list = list.filter((c) => `${c.title} ${c.product} ${c.speakers} ${c.reason}`.toLowerCase().includes(q));
   const undecided = (c) => !decisionOf(c.key);
@@ -141,7 +141,8 @@ export function binList(bin, { dest, topic, query, hideSeen }) {
     .sort((a, b) => (seen[b.key] || '').localeCompare(seen[a.key] || ''));
   if (bin === 'sorted') {
     const at = (c) => state.decisions.decisions[c.key]?.at || '';
-    return state.clips.filter((c) => lane(c) === dest && decisionOf(c.key)).sort((a, b) => at(b).localeCompare(at(a)));
+    return state.clips.filter((c) => lane(c) === dest && decisionOf(c.key) && (!sid || c.sid === sid))
+      .sort((a, b) => at(b).localeCompare(at(a)));
   }
   return list;
 }
