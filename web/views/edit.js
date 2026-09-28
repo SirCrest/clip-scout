@@ -91,7 +91,7 @@ export function Edit({ ui, go }) {
       <div class="scroll" style="flex:1">
         ${items.length ? items.map(({ clip, d }) => {
           const r = renders[clip.key], a = rs.active?.key === clip.key, q = rs.queued.includes(clip.key);
-          const st = d === 'maybe' ? { i: 'maybe', t: 'Needs you' } : r ? { i: 'ready', t: 'Rendered', cls: 'ready' } : a ? { i: 'spinner', t: `Rendering ${Math.round((rs.active.progress || 0) * 100)}%`, spin: 1 }
+          const st = d === 'maybe' ? { i: 'maybe', t: 'Needs you' } : r ? { i: 'ready', t: 'Rendered', cls: 'ready' } : a ? { i: 'spinner', t: rs.active.stage === 'planning' ? 'Planning edits' : `Rendering ${Math.round((rs.active.progress || 0) * 100)}%`, spin: 1 }
             : q ? { i: 'clock', t: 'Waiting for edits' } : { i: 'edit', t: 'Planned' };
           return html`<button class=${`eqi ${lane(clip)} ${clip.key === selKey ? 'on' : ''}`} onClick=${() => setSelKey(clip.key)}>
             <span class="poster"><img src=${`/thumb/${clip.key}`} alt="" loading="lazy" /></span>
@@ -152,7 +152,8 @@ export function Edit({ ui, go }) {
           ${render && !active ? html`<div class="render-state"><${Icon} n="ready" /><span>Rendered</span></div>
             <div class="row"><button class="btn" onClick=${() => api.reveal(c.key)}><${Icon} n="folder" />Show file</button>
               <a class="btn" href=${`/out/${c.key}`} target="_blank"><${Icon} n="play" /></a></div>`
-          : active ? html`<div class="render-state"><${Icon} n="spinner" cls="spin" /><span>Rendering</span></div><div class="pbar"><i style=${`width:${(active.progress || 0) * 100}%`}></i></div>`
+          : active ? html`<div class="render-state"><${Icon} n="spinner" cls="spin" /><span>${active.stage === 'planning' ? 'Listening for pauses and fillers…' : 'Rendering'}</span></div>
+              ${active.stage !== 'planning' ? html`<div class="pbar"><i style=${`width:${(active.progress || 0) * 100}%`}></i></div>` : null}`
           : queued ? html`<div class="render-state"><${Icon} n="clock" /><span>${view?.task && view.task.state !== 'done' ? 'Renders when your agent is done' : 'Waiting to render'}</span></div>` : null}
           ${kept ? html`<button class="btn hot" disabled=${!!active} onClick=${() => api.render(c.key).then(() => toast('Rendering with these edits'))}><${Icon} n="retry" />${render ? 'Render again' : 'Render now'}</button>` : null}
         </div>` : null}

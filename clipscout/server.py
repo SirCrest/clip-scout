@@ -251,26 +251,45 @@ class Renderer(Loop):
         return False
 
     def step(self):
+        """First give every queued clip its edit plan (which opens the agent's edit task), then render the ones
+        whose edits are settled."""
         from . import edit, render
         while True:
             with self.lock:
-                ready = next((q for q in self.queue if q['now'] or not self._edit_pending(q['key'])), None)
-                if not ready:
-                    return
-                self.queue.remove(ready)
-            key = ready['key']
-            try:
-                stream, clip = catalog.find(key)
-            except HTTPException:
-                continue
+                queue = list(self.queue)
+            ready = None
+            for q in queue:
+                try:
+                    stream, clip = catalog.find(q['key'])
+                except HTTPException:
+                    self.cancel(q['key'])
+                    continue
+                if not edit.load_edl(stream, clip):
+                    self.active = {'key': q['key'], 'progress': 0.0, 'stage': 'planning'}
+                    activity.say(f'Planning edits for {clip.get("title", q["key"])}')
+                    try:
+                        edit.ensure(stream, clip)
+                    except Exception as e:
+                        activity.say(f'Edit planning failed for {q["key"]}: {e}')
+                        self.cancel(q['key'])
+                    self.active = None
+                    agent_loop.poke()
+                    continue
+                if q['now'] or not self._edit_pending(q['key']):
+                    ready = (q, stream, clip)
+                    break
+            if not ready:
+                return
+            q, stream, clip = ready
+            self.cancel(q['key'])
+            key = q['key']
             out = render_path(stream, clip)
             out.parent.mkdir(parents=True, exist_ok=True)
-            self.active = {'key': key, 'progress': 0.0}
+            self.active = {'key': key, 'progress': 0.0, 'stage': 'rendering'}
             activity.say(f'Rendering {clip.get("title", key)}')
-            edit.ensure(stream, clip)
 
             def progress(fraction):
-                self.active = {'key': key, 'progress': round(fraction, 3)}
+                self.active = {'key': key, 'progress': round(fraction, 3), 'stage': 'rendering'}
             try:
                 render.render_clip(stream, clip, out, progress=progress)
             except Exception as e:
@@ -605,8 +624,12 @@ def media(sid: str):
 def thumb(sid: str, cid: str):
     stream = catalog.stream(sid)
     path = stream.path('thumbs') / f'{cid}.jpg'
-    if not path.exists():
-        raise HTTPException(404)
+    if not path.exists():  # planning skipped it (e.g. the disk was busy): make it now
+        from .plan import thumbnail
+        _, clip = catalog.find(f'{sid}/{cid}')
+        path.parent.mkdir(exist_ok=True)
+        if not (stream.media and stream.media.exists() and thumbnail(stream.media, clip, path)):
+            raise HTTPException(404)
     return FileResponse(path, media_type='image/jpeg', headers={'Cache-Control': 'max-age=86400'})
 
 

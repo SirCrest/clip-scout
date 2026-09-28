@@ -47,7 +47,16 @@ export async function start() {
 export const decisionOf = (key) =>
   state.pending.has(key) ? state.pending.get(key) : state.decisions.decisions[key]?.d || null;
 
-export async function decide(key, d, why = null) {
+const inflight = new Map(); // key -> the save of its latest decision, so a reason picked right after waits for it
+
+export function decide(key, d, why = null) {
+  const p = (inflight.get(key) || Promise.resolve()).then(() => saveDecision(key, d, why));
+  inflight.set(key, p);
+  p.finally(() => { if (inflight.get(key) === p) inflight.delete(key); });
+  return p;
+}
+
+async function saveDecision(key, d, why) {
   const before = decisionOf(key);
   state.pending.set(key, d);
   emit();
@@ -68,6 +77,7 @@ export async function decide(key, d, why = null) {
 }
 
 export async function setReason(key, why) {
+  await inflight.get(key);
   const rec = state.decisions.decisions[key];
   if (rec) rec.why = why;
   emit();

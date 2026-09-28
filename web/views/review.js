@@ -125,7 +125,7 @@ export function Review({ ui, go }) {
   // keyboard
   useEffect(() => {
     const onKey = (e) => {
-      if (e.target.closest('input, textarea, select') || e.metaKey || e.altKey) return;
+      if (e.target?.closest?.('input, textarea, select') || e.metaKey || e.altKey) return;
       if (e.ctrlKey && e.key.toLowerCase() !== 'z') return;
       const k = e.key.toLowerCase();
       if (ask && /^[1-5]$/.test(k)) { const r = (ask.dec === 'cut' ? CUT_REASONS : MAYBE_NEEDS)[+k - 1]; setReason(ask.key, r.k); setAsk(null); return e.preventDefault(); }
