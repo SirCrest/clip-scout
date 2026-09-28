@@ -390,6 +390,7 @@ svg.timeline { display: block; width: 100%; height: 100%; }
 .proof .gap .ic { width: 12px; height: 12px; }
 .proof .gap.kept { color: var(--faint); }
 .cuts { display: flex; flex-direction: column; gap: 4px; }
+.cutrow .chip { font-size: 11.5px; }
 .cutrow { display: grid; grid-template-columns: 48px 1fr auto; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); padding: 3px 0; }
 .cutrow .num { color: var(--faint); }
 .cutrow .seg button { height: 26px; min-width: 28px; }

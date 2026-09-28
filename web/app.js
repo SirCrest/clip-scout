@@ -31,7 +31,13 @@ function App() {
   const [uploading, setUploading] = useState(null);
   const [dragging, setDragging] = useState(false);
 
-  const go = (k) => { setSpace(k); history.replaceState(null, '', `#${k}`); };
+  const go = (k) => { setSpace(k); if (location.hash.slice(1) !== k) history.pushState(null, '', `#${k}`); };
+  useEffect(() => {  // back/forward and typed links move between spaces
+    const on = () => { const k = location.hash.slice(1).split('?')[0]; if (SPACES.some((x) => x.k === k) || k === 'settings') setSpace(k); };
+    window.addEventListener('hashchange', on);
+    window.addEventListener('popstate', on);
+    return () => { window.removeEventListener('hashchange', on); window.removeEventListener('popstate', on); };
+  }, []);
   // First visit: land on Review when there are clips, Streams when there aren't.
   useEffect(() => { if (s.ready && !space) go(s.clips.length ? 'review' : 'ingest'); }, [s.ready]);
 

@@ -9,6 +9,11 @@ import { Player, Strip } from '../components.js';
 const KIND = { pause: { icon: 'pause', t: 'Pauses' }, filler: { icon: 'filler', t: 'Fillers' }, content: { icon: 'tangent', t: 'Detours and false starts' },
   trim: { icon: 'bounds', t: 'Start and end' } };
 const waves = new Map();
+const summarize = (cuts) => {
+  const why = {};
+  for (const c of cuts) why[c.why] = (why[c.why] || 0) + 1;
+  return Object.entries(why).sort((a, b) => b[1] - a[1]).map(([w, n]) => `${n} × ${w}`).join(' · ');
+};
 
 function useRenders() {
   const [r, set] = useState({});
@@ -144,9 +149,10 @@ export function Edit({ ui, go }) {
           ${Object.entries(edl.stats.removed || {}).map(([k, s]) => html`<div class="flag"><${Icon} n=${KIND[k]?.icon || 'cut'} />${KIND[k]?.t || k}<span class="num" style="margin-left:auto">${s.toFixed(1)} s</span></div>`)}</div>
         <div class="sec"><div class="sech"><${Icon} n="hardcut" /><span>Cuts</span></div>
           <div class="cuts">${edl.cuts.map((k) => html`<div class="cutrow"><button class="num" style="text-align:left" onClick=${() => player.current?.seekOut(Math.max(0, (k.at ?? 0) - 2))} title="Hear this cut">${fmt.dur(k.at ?? 0)}</button>
-            <span title=${k.tight ? 'The words run together here: give this cut a listen' : k.why} style=${k.tight ? 'color:var(--tung)' : ''}>${k.tight ? html`<${Icon} n="alert" /> ` : null}${k.why}</span>
-            <div class="seg"><button class=${k.style === 'hard' ? 'on' : ''} title="Hard cut" onClick=${() => change({ style: { [k.i]: 'hard' } })}><${Icon} n="hardcut" /></button>
-              <button class=${k.style === 'punch' ? 'on' : ''} title="Punch in" onClick=${() => change({ style: { [k.i]: 'punch' } })}><${Icon} n="punch" /></button></div></div>`)}
+            <span>${k.tight ? html`<button class="chip" style="color:var(--tung)" title="The words run together here: give this cut a listen" onClick=${() => player.current?.seekOut(Math.max(0, (k.at ?? 0) - 2))}><${Icon} n="alert" />listen</button>` : null}</span>
+            <div class="seg" title=${`Chosen: ${k.style === 'punch' ? 'punch-in' : 'hard cut'} (${k.why})`}><button class=${k.style === 'hard' ? 'on' : ''} aria-label="Hard cut" onClick=${() => change({ style: { [k.i]: 'hard' } })}><${Icon} n="hardcut" /></button>
+              <button class=${k.style === 'punch' ? 'on' : ''} aria-label="Punch in" onClick=${() => change({ style: { [k.i]: 'punch' } })}><${Icon} n="punch" /></button></div></div>`)}
+            ${edl.cuts.length ? html`<span class="faint" style="font-size:12px">${summarize(edl.cuts)}</span>` : null}
             ${!edl.cuts.length ? html`<span class="dim" style="font-size:12.5px">No cuts: it already flows.</span>` : null}</div></div>` : null}
         <div class="sec">
           ${render && !active ? html`<div class="render-state"><${Icon} n="ready" /><span>Rendered</span></div>
