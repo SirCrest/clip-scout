@@ -55,7 +55,8 @@ def test_add_file_links_and_is_idempotent(library):
     s = ingest.add(src)
     assert s.date == '2026-09-15'
     assert s.title == 'Features you missed'
-    assert s.meta['source']['kind'] == 'file'
+    assert s.id == 'tw2805139766'  # the yt-dlp tag keeps a downloaded VOD's Twitch identity
+    assert s.meta['source']['kind'] == 'twitch' and s.meta['source']['path'] == str(src.resolve())
     assert s.media.name == 'source.mp4' and s.media.exists()
     assert ingest.add(src).id == s.id
     ingest.fetch(s)

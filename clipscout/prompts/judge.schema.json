@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "side", "bin", "stars", "reason", "dupe_of", "merge", "post"],
+    "additionalProperties": false,
+    "properties": {
+      "id": {"type": "string", "pattern": "^t\\d{6}[a-z]?$"},
+      "side": {"enum": ["staff", "community"]},
+      "bin": {"enum": ["top", "effort", "off", "dupe"]},
+      "stars": {"type": "integer", "minimum": 1, "maximum": 5},
+      "reason": {"type": "string", "minLength": 5, "maxLength": 140},
+      "dupe_of": {"type": ["string", "null"]},
+      "merge": {"type": ["array", "null"], "items": {"type": "string"}, "minItems": 2},
+      "post": {"type": ["string", "null"], "maxLength": 280}
+    }
+  }
+}

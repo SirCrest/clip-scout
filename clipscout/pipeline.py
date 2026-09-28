@@ -43,12 +43,17 @@ def advance(stream, until=None, log=print):
                 return 'done'
             continue
         if name in lib.AGENT_STAGES:
-            if tasks.stage_complete(stream, name):
+            mine = tasks.list_tasks(kind=name, stream=stream.id)
+            if mine and all(t['state'] in ('done', 'cancelled') for t in mine):
                 stream.set_stage(name, 'done')
                 continue
-            opened = tasks.open_stage_tasks(stream, name)
-            stream.set_stage(name, 'waiting', tasks=opened)
-            log(f'{stream.id}: {name} waiting on {len(opened)} agent task(s)')
+            if not mine:
+                opened = tasks.open_stage_tasks(stream, name)
+                if not opened:  # e.g. no clips were picked, so there is nothing to judge
+                    stream.set_stage(name, 'skipped', note='nothing to do')
+                    continue
+                stream.set_stage(name, 'waiting', tasks=opened)
+                log(f'{stream.id}: {name} waiting on {len(opened)} agent task(s)')
             return 'waiting'
         stream.set_stage(name, 'running', progress=0)
         log(f'{stream.id}: {name}')

@@ -187,6 +187,12 @@ def reopen(tid):
     _save(task)
 
 
+def fail(tid, reason):
+    task = load(tid)
+    task.update(state='failed', claimed_at=None, failed=lib.now(), reason=reason)
+    _save(task)
+
+
 def open_stage_tasks(stream, stage):
     return _module(stage).open_tasks(stream)
 

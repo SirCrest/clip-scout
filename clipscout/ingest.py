@@ -99,7 +99,8 @@ def _add_file(path, title, date, mode):
     if not path.is_file():
         raise FileNotFoundError(f'no such file: {path}')
     size = path.stat().st_size
-    sid = lib.stream_id('file', f'{path.name}|{size}')
+    twitch = re.search(r'\[v?(\d{9,11})\]', path.stem)  # yt-dlp names: "<date> <title> [v2805139766]"
+    sid = lib.stream_id('twitch', twitch.group(1)) if twitch else lib.stream_id('file', f'{path.name}|{size}')
     if s := _existing(sid):
         return s
     m = DATED.match(path.stem)
@@ -109,6 +110,8 @@ def _add_file(path, title, date, mode):
     if mode is None:
         mode = 'link' if _same_volume(path.parent, lib.STREAMS) else 'copy'
     source = {'kind': 'file', 'path': str(path), 'name': path.name, 'size': size, 'mode': mode}
+    if twitch:
+        source.update(kind='twitch', id=twitch.group(1), url=f'https://www.twitch.tv/videos/{twitch.group(1)}')
     stream = lib.create_stream(sid, title, date, source, media=f'source{path.suffix.lower()}')
     dest = stream.media
     try:
@@ -167,7 +170,7 @@ def _download(stream, progress):
 def fetch(stream, progress=lambda fraction, note='': None):
     """The 'fetch' stage: make sure the stream's video is in its folder, then record its duration."""
     source = stream.meta['source']
-    if source['kind'] == 'file':
+    if source.get('path'):  # added from a local file (possibly a downloaded Twitch VOD)
         dest = stream.media
         if not dest.exists():
             src = Path(source['path'])
