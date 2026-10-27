@@ -30,18 +30,20 @@ All) to a drive with plenty of free space (each stream takes 5-15 GB), not a fol
 syncs, and double-click Clip Scout.bat in the extracted Clip Scout folder. If Windows still warns that it can't
 verify the publisher or that it protected your PC, choose Run (or More info, then Run anyway).
 
-The first start downloads Python and the packages Clip Scout needs (a few GB) and keeps a download cache of about
-6 GB on C:, in AppData. After that Clip Scout opens in seconds.
+The first start downloads Python and the packages Clip Scout needs (a few GB); after that Clip Scout opens in
+seconds. Besides this folder it keeps about 8 GB on drive C, in a download cache of about 6 GB in AppData and the
+speech and audio models (about 2 GB, fetched when first used) in .cache\\huggingface in your user folder.
 
 Your streams, clips and YouTube sign-in are kept inside this folder, in library and secrets. Deleting this folder
 deletes them.
 
-To update: close Clip Scout and unblock the new zip as above. In this folder, delete the clipscout, web, elgato and
-.claude folders: they hold only Clip Scout's own files, and this clears out any that the new version dropped. Then
-copy everything inside the new zip's Clip Scout folder into this one, replacing the files that are already here.
-Your library, secrets and .venv folders aren't in the zip, so they stay as they are. Deleting elgato also deletes
-changes you made to its guides, so keep a copy of any you want first. Don't extract a new version to a separate
-folder: it would start with an empty library.
+To update: close Clip Scout and unblock the new zip as above. In this folder, delete the clipscout, web and elgato
+folders, and the skills folder inside .claude: they hold only Clip Scout's own files, and this clears out any that
+the new version dropped (the rest of .claude keeps your agent's settings). Then copy everything inside the new
+zip's Clip Scout folder into this one, replacing the files that are already here. Your library, secrets and .venv
+folders aren't in the zip, so they stay as they are. Deleting elgato also deletes changes you made to its guides,
+so keep a copy of any you want first. Don't extract a new version to a separate folder: it would start with an
+empty library.
 """
 X64 = 0x8664  # PE machine type of an x86-64 Windows executable
 UV_LICENSE = ROOT / 'tools' / 'uv-LICENSE-MIT.txt'  # uv is MIT OR Apache-2.0; copies of uv.exe carry the notice
