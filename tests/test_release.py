@@ -49,6 +49,24 @@ def test_release_holds_the_app_and_uv(release):
     assert f'Clip Scout {packaged}' in notes and 'To update' in notes and '\r\n' in notes
 
 
+def load(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_release_names_its_own_uv_in_commands(release, tmp_path):
+    """Commands the app shows (TASK.md, health hints) name the bundled uv in a release, where uv isn't on PATH."""
+    _, files = release
+    folder = tmp_path / 'extracted'
+    for name in ('Clip Scout/clipscout/library.py', 'Clip Scout/uv/uv.exe'):
+        (folder / name).parent.mkdir(parents=True, exist_ok=True)
+        (folder / name).write_bytes(files[name])
+    assert load('released_library', folder / 'Clip Scout/clipscout/library.py').UV == 'uv/uv.exe'
+    assert load('repo_library', ROOT / 'clipscout/library.py').UV == 'uv'
+
+
 def test_wont_replace_a_release_of_the_same_version(release):
     out, _ = release
     uv = out.parent.parent / 'uv.exe'

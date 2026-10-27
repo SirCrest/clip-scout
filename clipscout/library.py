@@ -37,6 +37,7 @@ LIBRARY = Path(os.environ.get('CLIPSCOUT_LIBRARY', ROOT / 'library'))
 STREAMS = LIBRARY / 'streams'
 TASKS = LIBRARY / 'tasks'
 ELGATO = ROOT / 'elgato'
+UV = 'uv/uv.exe' if (ROOT / 'uv' / 'uv.exe').exists() else 'uv'  # for commands we show: a release has its own uv
 
 STAGES = ('fetch', 'transcribe', 'pick', 'plan', 'music', 'judge')
 AGENT_STAGES = ('pick', 'judge')

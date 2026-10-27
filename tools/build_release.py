@@ -38,12 +38,12 @@ Your streams, clips and YouTube sign-in are kept inside this folder, in library 
 deletes them.
 
 To update: close Clip Scout and unblock the new zip as above. In this folder, delete the clipscout, web and elgato
-folders, and the skills folder inside .claude: they hold only Clip Scout's own files, and this clears out any that
-the new version dropped (the rest of .claude keeps your agent's settings). Then copy everything inside the new
-zip's Clip Scout folder into this one, replacing the files that are already here. Your library, secrets and .venv
-folders aren't in the zip, so they stay as they are. Deleting elgato also deletes changes you made to its guides,
-so keep a copy of any you want first. Don't extract a new version to a separate folder: it would start with an
-empty library.
+folders, and the clip-scout folder in .claude\\skills: they hold only Clip Scout's own files, and this clears out
+any that the new version dropped (the rest of .claude keeps your agent's settings and skills). Then copy
+everything inside the new zip's Clip Scout folder into this one, replacing the files that are already here. Your
+library, secrets and .venv folders aren't in the zip, so they stay as they are. Deleting elgato also deletes
+changes you made to its guides, so keep a copy of any you want first. Don't extract a new version to a separate
+folder: it would start with an empty library.
 """
 X64 = 0x8664  # PE machine type of an x86-64 Windows executable
 UV_LICENSE = ROOT / 'tools' / 'uv-LICENSE-MIT.txt'  # uv is MIT OR Apache-2.0; copies of uv.exe carry the notice

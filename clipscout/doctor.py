@@ -48,7 +48,7 @@ def check_gpu():
             except (OSError, AttributeError):
                 missing.append(dll)
         if missing:
-            rows.append((WARN, f"CUDA libraries not loadable: {', '.join(missing)} (run `uv sync`)"))
+            rows.append((WARN, f"CUDA libraries not loadable: {', '.join(missing)} (run `{lib.UV} sync --all-extras`)"))
     return rows
 
 
@@ -65,7 +65,8 @@ def check_torch():
         cuda = torch.cuda.is_available()
         rows = [(OK, f"torch {torch.__version__} ({'CUDA' if cuda else 'CPU only'}) for the music check and editing")]
     except ImportError:
-        return [(WARN, 'torch not installed: music check skipped, filler timing rougher (run `uv sync --all-extras`)')]
+        return [(WARN, f'torch not installed: music check skipped, filler timing rougher '
+                       f'(run `{lib.UV} sync --all-extras`)')]
     from pathlib import Path
     import os
     hub = Path(os.environ.get('HF_HOME', Path.home() / '.cache' / 'huggingface')) / 'hub'
