@@ -36,10 +36,12 @@ The first start downloads Python and the packages Clip Scout needs (a few GB) an
 Your streams, clips and YouTube sign-in are kept inside this folder, in library and secrets. Deleting this folder
 deletes them.
 
-To update: close Clip Scout and unblock the new zip as above. Then copy everything inside its Clip Scout folder
-into this one, replacing the files that are already here. Your library, secrets and .venv folders aren't in the
-zip, so they stay as they are. Changes you made to files here (such as the guides in elgato) are replaced, so keep
-a copy of any you want. Don't extract a new version to a separate folder: it would start with an empty library.
+To update: close Clip Scout and unblock the new zip as above. In this folder, delete the clipscout, web, elgato and
+.claude folders: they hold only Clip Scout's own files, and this clears out any that the new version dropped. Then
+copy everything inside the new zip's Clip Scout folder into this one, replacing the files that are already here.
+Your library, secrets and .venv folders aren't in the zip, so they stay as they are. Deleting elgato also deletes
+changes you made to its guides, so keep a copy of any you want first. Don't extract a new version to a separate
+folder: it would start with an empty library.
 """
 X64 = 0x8664  # PE machine type of an x86-64 Windows executable
 UV_LICENSE = ROOT / 'tools' / 'uv-LICENSE-MIT.txt'  # uv is MIT OR Apache-2.0; copies of uv.exe carry the notice
@@ -82,6 +84,18 @@ def uv_version(uv):
                              f'pass --uv with the real uv.exe') from None
 
 
+def check_lock(uv):
+    """uv.lock must match pyproject.toml, or every user's first start would resolve the packages afresh, to versions
+    nobody tested. Checked with the uv being bundled, which must read this lock (off Windows, with the local uv)."""
+    runner = str(uv) if sys.platform == 'win32' else os.environ.get('UV') or shutil.which('uv')
+    if not runner:
+        raise SystemExit("can't check uv.lock: no uv to run here")
+    r = subprocess.run([runner, 'lock', '--check'], cwd=ROOT, capture_output=True, text=True, encoding='utf-8')
+    if r.returncode:
+        raise SystemExit(f'`uv lock --check` failed (if uv.lock is out of date, run `uv lock` and commit it):\n'
+                         f'{r.stderr.strip()}')
+
+
 def locked_version():
     lock = tomllib.loads(git('show', 'HEAD:uv.lock'))
     return next((p.get('version') for p in lock['package'] if p['name'] == 'clip-scout'), None)
@@ -99,6 +113,7 @@ def build(uv, out_dir=DIST, allow_dirty=False, force=False):
     uv = Path(uv)
     check_windows_exe(uv)
     bundled = uv_version(uv)
+    check_lock(uv)  # of the working tree, which is HEAD unless --allow-dirty
     out_dir.mkdir(parents=True, exist_ok=True)
     partial = out.with_name(out.name + '.partial')  # a failed build never leaves a half-made zip under the real name
     partial.unlink(missing_ok=True)

@@ -25,6 +25,7 @@ def release(tmp_path, monkeypatch):
     uv = tmp_path / 'uv.exe'
     uv.write_bytes(fake_exe())
     monkeypatch.setattr(build_release, 'uv_version', lambda path: 'uv 9.9.9')
+    monkeypatch.setattr(build_release, 'check_lock', lambda path: None)
     out = build_release.build(uv, tmp_path / 'dist', allow_dirty=True)
     with zipfile.ZipFile(out) as z:
         files = {n: z.read(n) for n in z.namelist() if not n.endswith('/')}
@@ -60,6 +61,7 @@ def test_a_failed_build_leaves_no_zip(tmp_path, monkeypatch):
     uv = tmp_path / 'uv.exe'
     uv.write_bytes(fake_exe())
     monkeypatch.setattr(build_release, 'uv_version', lambda path: 'uv 9.9.9')
+    monkeypatch.setattr(build_release, 'check_lock', lambda path: None)
 
     def broken(*args, **kwargs):
         raise OSError('disk full')
@@ -73,6 +75,12 @@ def test_refuses_a_stale_lock(tmp_path, monkeypatch):
     monkeypatch.setattr(build_release, 'locked_version', lambda: '0.0.1')
     with pytest.raises(SystemExit, match='run `uv lock`'):
         build_release.build(tmp_path / 'uv.exe', tmp_path / 'dist', allow_dirty=True)
+
+
+@pytest.mark.skipif(sys.platform != 'win32', reason='checks with the bundled uv only on Windows')
+def test_refuses_a_lock_the_bundled_uv_rejects():
+    with pytest.raises(SystemExit, match='uv lock --check'):
+        build_release.check_lock(sys.executable)  # stands in for a uv whose check fails: no script named "lock"
 
 
 REAL_UV = os.environ.get('UV') or shutil.which('uv')  # what build_release.main() picks

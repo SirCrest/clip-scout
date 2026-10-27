@@ -23,6 +23,8 @@ Never upload, publish or post anything, and never delete media. Those need the u
 
 ## Working on the code
 
+This needs a clone of the repo: a release folder leaves out `tests/` and `tools/`.
+
 - Python 3.12 via `uv` (`uv sync --all-extras`, `uv run scout ...`, `uv run pytest`); a plain `uv sync` removes
   the publish extra. Windows first; keep code Mac-ready.
 - Releases: `uv run python tools/build_release.py` zips HEAD with uv.exe into `dist/`. First bump `version` in
