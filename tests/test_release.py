@@ -40,6 +40,7 @@ def test_release_holds_the_app_and_uv(release):
                    'clipscout/prompts/pick.md', 'web/index.html', 'elgato/channel-guide.md'):
         assert f'Clip Scout/{needed}' in names
     assert files['Clip Scout/uv/uv.exe'] == fake_exe()
+    assert b'Astral Software' in files['Clip Scout/uv/LICENSE-MIT.txt']
     assert 'bundled uv 9.9.9' in files['Clip Scout/VERSION.txt'].decode()
     packaged = tomllib.loads(files['Clip Scout/pyproject.toml'].decode())['project']['version']
     assert out.name == f'Clip-Scout-{packaged}-windows.zip'
