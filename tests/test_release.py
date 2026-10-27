@@ -63,8 +63,9 @@ def test_release_names_its_own_uv_in_commands(release, tmp_path):
     for name in ('Clip Scout/clipscout/library.py', 'Clip Scout/uv/uv.exe'):
         (folder / name).parent.mkdir(parents=True, exist_ok=True)
         (folder / name).write_bytes(files[name])
-    assert load('released_library', folder / 'Clip Scout/clipscout/library.py').UV == 'uv/uv.exe'
-    assert load('repo_library', ROOT / 'clipscout/library.py').UV == 'uv'
+    released = load('released_library', folder / 'Clip Scout/clipscout/library.py').uv('run scout task list')
+    assert '`uv/uv.exe run scout task list` in the Clip Scout folder' in released and '`uv\\uv.exe`' in released
+    assert load('repo_library', ROOT / 'clipscout/library.py').uv('run scout task list') == '`uv run scout task list`'
 
 
 def test_wont_replace_a_release_of_the_same_version(release):
