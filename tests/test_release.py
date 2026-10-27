@@ -105,6 +105,14 @@ def test_release_leaves_out_dev_and_private_files(release):
         assert rel != '.gitattributes'
 
 
+def test_ignore_lists_what_gitignore_does():
+    """.ignore stands in for .gitignore where there's no git repo, as in a release folder."""
+    def patterns(name):
+        lines = (ROOT / name).read_text().splitlines()
+        return {line.strip() for line in lines if line.strip() and not line.startswith('#')}
+    assert patterns('.gitignore') <= patterns('.ignore')
+
+
 def test_launcher_has_windows_line_endings(release):
     _, files = release
     bat = files['Clip Scout/Clip Scout.bat']

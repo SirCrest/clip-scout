@@ -5,9 +5,11 @@ setlocal
 pushd "%~dp0"
 if not exist "pyproject.toml" goto :not_extracted
 if exist "uv\uv.exe" set "PATH=%CD%\uv;%PATH%"
-rem uv's download cache is on C:. When this folder is on another drive, uv can't hard-link from the cache and warns
-rem as it falls back to copying, which reads like an error on the first start: copy without the warning.
-if not defined UV_LINK_MODE set "UV_LINK_MODE=copy"
+rem uv hard-links packages from its download cache, which can't cross drives. When this folder isn't on the cache's
+rem drive, uv warns as it falls back to copying, which reads like an error on the first start: copy without the warning.
+set "cache=%LOCALAPPDATA%"
+if defined UV_CACHE_DIR set "cache=%UV_CACHE_DIR%"
+if not defined UV_LINK_MODE if /i not "%CD:~0,2%"=="%cache:~0,2%" set "UV_LINK_MODE=copy"
 where uv >nul 2>nul || goto :no_uv
 where ffmpeg >nul 2>nul && where ffprobe >nul 2>nul || call :get_ffmpeg || exit /b 1
 uv run --all-extras scout serve
@@ -27,7 +29,7 @@ pause
 exit /b 1
 
 :get_ffmpeg
-echo Clip Scout needs ffmpeg and ffprobe, and they aren't installed.
+echo Clip Scout needs ffmpeg and ffprobe, and one or both of them aren't installed.
 where winget >nul 2>nul || goto :ffmpeg_download
 set "answer=Y"
 set /p "answer=Install ffmpeg (it includes ffprobe) now with winget? [Y/n] "

@@ -5,7 +5,9 @@ description: Work Clip Scout's task queue (pick clips from stream transcripts, j
 
 # Clip Scout
 
-Run everything from the repo root with `uv run scout ...`.
+Run everything from the Clip Scout folder (the repo root, or an extracted release) with `uv run scout ...`. In a
+release folder (one with a `uv` folder holding `uv.exe`), use that `uv.exe` wherever this says `uv`, even if `uv` is
+on PATH: `uv/uv.exe` in bash or PowerShell, `uv\uv.exe` in cmd.
 
 ## Add and process a stream
 1. `uv run scout add "<file path or Twitch/YouTube URL>"` prints the stream id.
