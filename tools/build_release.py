@@ -24,9 +24,11 @@ DIST = ROOT / 'dist'
 FOLDER = 'Clip Scout'
 NOTES = """Clip Scout {version}
 
-Install: extract the whole zip (right-click it, Extract All) to a drive with plenty of free space (each stream
-takes 5-15 GB), not a folder that OneDrive or Dropbox syncs. Then double-click Clip Scout.bat in the extracted
-Clip Scout folder.
+Install: if you downloaded the zip, first right-click it, choose Properties, tick Unblock (if it's there) and click
+OK, so Windows doesn't warn every time you open Clip Scout. Then extract the whole zip (right-click it, Extract
+All) to a drive with plenty of free space (each stream takes 5-15 GB), not a folder that OneDrive or Dropbox
+syncs, and double-click Clip Scout.bat in the extracted Clip Scout folder. If Windows still warns that it can't
+verify the publisher or that it protected your PC, choose Run (or More info, then Run anyway).
 
 The first start downloads Python and the packages Clip Scout needs (a few GB) and keeps a download cache of about
 6 GB on C:, in AppData. After that Clip Scout opens in seconds.
@@ -34,10 +36,10 @@ The first start downloads Python and the packages Clip Scout needs (a few GB) an
 Your streams, clips and YouTube sign-in are kept inside this folder, in library and secrets. Deleting this folder
 deletes them.
 
-To update: close Clip Scout. In this folder, delete everything except the library, secrets and .venv folders.
-Then copy everything inside the new zip's Clip Scout folder into this one. Changes you made to files here (such
-as the guides in elgato) are replaced, so keep a copy of any you want. Don't extract a new version to a separate
-folder: it would start with an empty library.
+To update: close Clip Scout, then copy everything inside the new zip's Clip Scout folder into this one, replacing
+the files that are already here. Your library, secrets and .venv folders aren't in the zip, so they stay as they
+are. Changes you made to files here (such as the guides in elgato) are replaced, so keep a copy of any you want.
+Don't extract a new version to a separate folder: it would start with an empty library.
 """
 X64 = 0x8664  # PE machine type of an x86-64 Windows executable
 
@@ -67,7 +69,7 @@ def uv_version(uv):
     files beside it, as package-manager shims do."""
     if sys.platform != 'win32':
         return 'uv (version not checked: built off Windows)'
-    with tempfile.TemporaryDirectory() as tmp:
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:  # antivirus may still hold the copy
         copy = Path(tmp) / 'uv.exe'
         shutil.copyfile(uv, copy)
         try:
