@@ -84,13 +84,18 @@ def uv_version(uv):
                              f'pass --uv with the real uv.exe') from None
 
 
-def check_lock(uv):
-    """uv.lock must match pyproject.toml, or every user's first start would resolve the packages afresh, to versions
-    nobody tested. Checked with the uv being bundled, which must read this lock (off Windows, with the local uv)."""
+def check_lock(uv, archive):
+    """The uv.lock in `archive` must match its pyproject.toml, or every user's first start would resolve the packages
+    afresh, to versions nobody tested. Checked on an extracted copy, so it's the packaged files and not the working
+    copy's, with the uv being bundled, which must read this lock (off Windows, with the local uv)."""
     runner = str(uv) if sys.platform == 'win32' else os.environ.get('UV') or shutil.which('uv')
     if not runner:
         raise SystemExit("can't check uv.lock: no uv to run here")
-    r = subprocess.run([runner, 'lock', '--check'], cwd=ROOT, capture_output=True, text=True, encoding='utf-8')
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
+        with zipfile.ZipFile(archive) as z:
+            z.extractall(tmp)
+        r = subprocess.run([runner, 'lock', '--check'], cwd=Path(tmp) / FOLDER, capture_output=True, text=True,
+                           encoding='utf-8')
     if r.returncode:
         raise SystemExit(f'`uv lock --check` failed (if uv.lock is out of date, run `uv lock` and commit it):\n'
                          f'{r.stderr.strip()}')
@@ -113,7 +118,6 @@ def build(uv, out_dir=DIST, allow_dirty=False, force=False):
     uv = Path(uv)
     check_windows_exe(uv)
     bundled = uv_version(uv)
-    check_lock(uv)  # of the working tree, which is HEAD unless --allow-dirty
     out_dir.mkdir(parents=True, exist_ok=True)
     partial = out.with_name(out.name + '.partial')  # a failed build never leaves a half-made zip under the real name
     partial.unlink(missing_ok=True)
@@ -121,6 +125,7 @@ def build(uv, out_dir=DIST, allow_dirty=False, force=False):
         # git archive applies .gitattributes: export-ignore drops tests and tools, eol=crlf keeps the .bat runnable
         subprocess.run(['git', 'archive', '--format=zip', f'--prefix={FOLDER}/', '-o', str(partial), 'HEAD'],
                        cwd=ROOT, check=True)
+        check_lock(uv, partial)
         with zipfile.ZipFile(partial, 'a', zipfile.ZIP_DEFLATED) as z:
             z.write(uv, f'{FOLDER}/uv/uv.exe')
             z.write(UV_LICENSE, f'{FOLDER}/uv/LICENSE-MIT.txt')
