@@ -107,7 +107,8 @@ def check_library():
 
 
 def checks():
-    rows = []
+    from . import __version__
+    rows = [(OK, f'Clip Scout {__version__}')]
     for check in (check_ffmpeg, check_gpu, check_model, check_torch, check_agents, check_library):
         try:
             rows += check()
