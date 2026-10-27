@@ -11,6 +11,7 @@ import argparse
 import hashlib
 import shutil
 import subprocess
+import sys
 import tomllib
 import zipfile
 from pathlib import Path
@@ -20,23 +21,36 @@ DIST = ROOT / 'dist'
 FOLDER = 'Clip Scout'
 
 
-def version():
-    return tomllib.loads((ROOT / 'pyproject.toml').read_text(encoding='utf-8'))['project']['version']
-
-
 def git(*args):
     return subprocess.run(['git', *args], cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
 
 
+def version():
+    """The version committed at HEAD, which is what the zip contains (not the working copy's)."""
+    return tomllib.loads(git('show', 'HEAD:pyproject.toml'))['project']['version']
+
+
+def check_windows_exe(uv):
+    with open(uv, 'rb') as f:
+        if f.read(2) != b'MZ':
+            raise SystemExit(f'{uv} is not a Windows executable: pass --uv with a Windows uv.exe')
+
+
 def uv_version(uv):
-    """`uv --version` of the uv being bundled, which also proves it's a working uv."""
-    return subprocess.run([str(uv), '--version'], capture_output=True, text=True, check=True).stdout.strip()
+    """`uv --version` of the uv being bundled, which also proves it's a working Windows uv."""
+    if sys.platform != 'win32':
+        return 'uv (version not checked: built off Windows)'
+    out = subprocess.run([str(uv), '--version'], capture_output=True, text=True, check=True).stdout.strip()
+    if 'windows' not in out:
+        raise SystemExit(f'{uv} reports "{out}", not a Windows build')
+    return out
 
 
 def build(uv, out_dir=DIST, allow_dirty=False):
     if not allow_dirty and git('status', '--porcelain'):
         raise SystemExit('commit your changes first: the release is built from HEAD (or pass --allow-dirty)')
     uv = Path(uv)
+    check_windows_exe(uv)
     bundled = uv_version(uv)
     out_dir.mkdir(parents=True, exist_ok=True)
     out = out_dir / f'Clip-Scout-{version()}-windows.zip'

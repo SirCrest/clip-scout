@@ -1,5 +1,6 @@
 import hashlib
 import importlib.util
+import tomllib
 import zipfile
 from pathlib import Path
 
@@ -14,7 +15,7 @@ spec.loader.exec_module(build_release)
 @pytest.fixture
 def release(tmp_path, monkeypatch):
     uv = tmp_path / 'uv.exe'
-    uv.write_bytes(b'fake uv')
+    uv.write_bytes(b'MZ fake uv')
     monkeypatch.setattr(build_release, 'uv_version', lambda path: 'uv 9.9.9')
     out = build_release.build(uv, tmp_path / 'dist', allow_dirty=True)
     with zipfile.ZipFile(out) as z:
@@ -29,8 +30,18 @@ def test_release_holds_the_app_and_uv(release):
     for needed in ('Clip Scout.bat', 'pyproject.toml', 'uv.lock', 'AGENTS.md', 'clipscout/cli.py',
                    'clipscout/prompts/pick.md', 'web/index.html', 'elgato/channel-guide.md'):
         assert f'Clip Scout/{needed}' in names
-    assert files['Clip Scout/uv/uv.exe'] == b'fake uv'
+    assert files['Clip Scout/uv/uv.exe'] == b'MZ fake uv'
     assert 'bundled uv 9.9.9' in files['Clip Scout/VERSION.txt'].decode()
+    packaged = tomllib.loads(files['Clip Scout/pyproject.toml'].decode())['project']['version']
+    assert out.name == f'Clip-Scout-{packaged}-windows.zip'
+
+
+def test_refuses_a_uv_that_is_not_for_windows(tmp_path):
+    uv = tmp_path / 'uv'
+    uv.write_bytes(b'\x7fELF linux uv')
+    with pytest.raises(SystemExit, match='not a Windows executable'):
+        build_release.build(uv, tmp_path / 'dist', allow_dirty=True)
+    assert not (tmp_path / 'dist').exists()
 
 
 def test_release_leaves_out_dev_and_private_files(release):
