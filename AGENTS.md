@@ -14,7 +14,9 @@ Repeat until there's nothing left:
 4. `uv run scout task submit <task id>`. If it lists problems, fix `output.json` and submit again.
 
 In a release folder (one with a `uv` folder holding `uv.exe`), if `uv` isn't on PATH, use that `uv.exe` wherever
-these steps say `uv`: `uv/uv.exe` in bash or PowerShell, `uv\uv.exe` in cmd. `uv run scout task list` shows every task and its state. Only ever write a task's `output.json`: don't edit anything
+these steps say `uv`: `uv/uv.exe` in bash or PowerShell, `uv\uv.exe` in cmd.
+
+`uv run scout task list` shows every task and its state. Only ever write a task's `output.json`: don't edit anything
 else under `library/`, and don't change the guides in `elgato/` unless the user asks.
 
 Never upload, publish or post anything, and never delete media. Those need the user.

@@ -24,19 +24,22 @@ DIST = ROOT / 'dist'
 FOLDER = 'Clip Scout'
 NOTES = """Clip Scout {version}
 
-Start: double-click Clip Scout.bat. The first start downloads Python and the packages Clip Scout needs (a few GB);
-after that it opens in seconds.
+Install: extract the whole zip (right-click it, Extract All) to a drive with plenty of free space (each stream
+takes 5-15 GB), not a folder that OneDrive or Dropbox syncs. Then double-click Clip Scout.bat in the extracted
+Clip Scout folder.
 
-Where to put this folder: a drive with plenty of free space (each stream takes 5-15 GB), and not a folder that
-OneDrive or Dropbox syncs.
+The first start downloads Python and the packages Clip Scout needs (a few GB) and keeps a download cache of about
+6 GB on C:, in AppData. After that Clip Scout opens in seconds.
 
 Your streams, clips and YouTube sign-in are kept inside this folder, in library and secrets. Deleting this folder
 deletes them.
 
-To update: close Clip Scout, open the new zip, copy its Clip Scout folder into the folder that holds this one, and
-choose to replace the files. The zip has no library or secrets folder, so yours are kept. Don't extract a new
-version to a separate folder: it would start with an empty library.
+To update: close Clip Scout. In this folder, delete everything except the library, secrets and .venv folders.
+Then copy everything inside the new zip's Clip Scout folder into this one. Changes you made to files here (such
+as the guides in elgato) are replaced, so keep a copy of any you want. Don't extract a new version to a separate
+folder: it would start with an empty library.
 """
+X64 = 0x8664  # PE machine type of an x86-64 Windows executable
 
 
 def git(*args):
@@ -49,9 +52,14 @@ def version():
 
 
 def check_windows_exe(uv):
+    """The bundled uv must be an x86-64 Windows executable: an MZ header whose PE header names that machine."""
     with open(uv, 'rb') as f:
-        if f.read(2) != b'MZ':
-            raise SystemExit(f'{uv} is not a Windows executable: pass --uv with a Windows uv.exe')
+        head = f.read(4096)
+    pe = int.from_bytes(head[0x3C:0x40], 'little') if len(head) >= 0x40 else 0
+    if head[:2] != b'MZ' or head[pe:pe + 4] != b'PE\0\0':
+        raise SystemExit(f'{uv} is not a Windows executable: pass --uv with a Windows uv.exe')
+    if int.from_bytes(head[pe + 4:pe + 6], 'little') != X64:
+        raise SystemExit(f'{uv} is not an x86-64 build: pass --uv with the x86_64 Windows uv.exe')
 
 
 def uv_version(uv):
@@ -62,7 +70,12 @@ def uv_version(uv):
     with tempfile.TemporaryDirectory() as tmp:
         copy = Path(tmp) / 'uv.exe'
         shutil.copyfile(uv, copy)
-        return subprocess.run([str(copy), '--version'], capture_output=True, text=True, check=True).stdout.strip()
+        try:
+            return subprocess.run([str(copy), '--version'], capture_output=True, text=True,
+                                  check=True).stdout.strip()
+        except (OSError, subprocess.CalledProcessError) as e:
+            raise SystemExit(f"{uv} doesn't run on its own ({e}); it may be a package manager's shim: "
+                             f'pass --uv with the real uv.exe') from None
 
 
 def locked_version():
@@ -83,17 +96,22 @@ def build(uv, out_dir=DIST, allow_dirty=False, force=False):
     check_windows_exe(uv)
     bundled = uv_version(uv)
     out_dir.mkdir(parents=True, exist_ok=True)
-    out.unlink(missing_ok=True)
-    # git archive applies .gitattributes: export-ignore drops tests and tools, eol=crlf keeps the .bat runnable
-    subprocess.run(['git', 'archive', '--format=zip', f'--prefix={FOLDER}/', '-o', str(out), 'HEAD'],
-                   cwd=ROOT, check=True)
-    with zipfile.ZipFile(out, 'a', zipfile.ZIP_DEFLATED) as z:
-        z.write(uv, f'{FOLDER}/uv/uv.exe')
-        z.writestr(f'{FOLDER}/VERSION.txt',
-                   f'Clip Scout {version()} ({git("rev-parse", "--short", "HEAD")})\nbundled {bundled}\n')
-        z.writestr(f'{FOLDER}/READ ME FIRST.txt', NOTES.format(version=version()).replace('\n', '\r\n'))
-    digest = hashlib.sha256(out.read_bytes()).hexdigest()
-    out.with_name(out.name + '.sha256').write_text(f'{digest}  {out.name}\n', encoding='utf-8')
+    partial = out.with_name(out.name + '.partial')  # a failed build never leaves a half-made zip under the real name
+    partial.unlink(missing_ok=True)
+    try:
+        # git archive applies .gitattributes: export-ignore drops tests and tools, eol=crlf keeps the .bat runnable
+        subprocess.run(['git', 'archive', '--format=zip', f'--prefix={FOLDER}/', '-o', str(partial), 'HEAD'],
+                       cwd=ROOT, check=True)
+        with zipfile.ZipFile(partial, 'a', zipfile.ZIP_DEFLATED) as z:
+            z.write(uv, f'{FOLDER}/uv/uv.exe')
+            z.writestr(f'{FOLDER}/VERSION.txt',
+                       f'Clip Scout {version()} ({git("rev-parse", "--short", "HEAD")})\nbundled {bundled}\n')
+            z.writestr(f'{FOLDER}/READ ME FIRST.txt', NOTES.format(version=version()).replace('\n', '\r\n'))
+        digest = hashlib.sha256(partial.read_bytes()).hexdigest()
+        os.replace(partial, out)
+    finally:
+        partial.unlink(missing_ok=True)
+    out.with_name(out.name + '.sha256').write_bytes(f'{digest}  {out.name}\n'.encode())  # LF, for sha256sum -c
     return out
 
 

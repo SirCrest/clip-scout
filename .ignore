@@ -1,0 +1,6 @@
+# Keeps search tools (ripgrep and the agents built on it) out of these where there is no git repo, as in a release
+# folder. Same as .gitignore.
+.venv/
+library/
+secrets/
+/dist/

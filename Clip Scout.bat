@@ -2,13 +2,20 @@
 rem Opens Clip Scout in your browser. The first run sets up Python and the packages Clip Scout needs (a one-time
 rem download of a few GB). A release folder carries its own uv in uv\; a clone of the repo uses the uv on PATH.
 setlocal
-cd /d "%~dp0"
-if exist "uv\uv.exe" set "PATH=%~dp0uv;%PATH%"
+pushd "%~dp0"
+if not exist "pyproject.toml" goto :not_extracted
+if exist "uv\uv.exe" set "PATH=%CD%\uv;%PATH%"
 where uv >nul 2>nul || goto :no_uv
 where ffmpeg >nul 2>nul && where ffprobe >nul 2>nul || call :get_ffmpeg || exit /b 1
 uv run --all-extras scout serve
 if errorlevel 1 pause
 exit /b
+
+:not_extracted
+echo Clip Scout has to be extracted before it runs. Right-click the zip, choose Extract All, then
+echo double-click Clip Scout.bat in the extracted folder.
+pause
+exit /b 1
 
 :no_uv
 echo Clip Scout needs uv. Install it with:
