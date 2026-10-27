@@ -21,7 +21,8 @@ def release(tmp_path, monkeypatch):
     monkeypatch.setattr(build_release, 'uv_version', lambda path: 'uv 9.9.9')
     out = build_release.build(uv, tmp_path / 'dist', allow_dirty=True)
     with zipfile.ZipFile(out) as z:
-        yield out, {n: z.read(n) for n in z.namelist() if not n.endswith('/')}
+        files = {n: z.read(n) for n in z.namelist() if not n.endswith('/')}
+    return out, files
 
 
 def test_release_holds_the_app_and_uv(release):
@@ -36,6 +37,22 @@ def test_release_holds_the_app_and_uv(release):
     assert 'bundled uv 9.9.9' in files['Clip Scout/VERSION.txt'].decode()
     packaged = tomllib.loads(files['Clip Scout/pyproject.toml'].decode())['project']['version']
     assert out.name == f'Clip-Scout-{packaged}-windows.zip'
+    notes = files['Clip Scout/READ ME FIRST.txt'].decode()
+    assert f'Clip Scout {packaged}' in notes and 'To update' in notes and '\r\n' in notes
+
+
+def test_wont_replace_a_release_of_the_same_version(release):
+    out, _ = release
+    uv = out.parent.parent / 'uv.exe'
+    with pytest.raises(SystemExit, match='already exists'):
+        build_release.build(uv, out.parent, allow_dirty=True)
+    assert build_release.build(uv, out.parent, allow_dirty=True, force=True) == out
+
+
+def test_refuses_a_stale_lock(tmp_path, monkeypatch):
+    monkeypatch.setattr(build_release, 'locked_version', lambda: '0.0.1')
+    with pytest.raises(SystemExit, match='run `uv lock`'):
+        build_release.build(tmp_path / 'uv.exe', tmp_path / 'dist', allow_dirty=True)
 
 
 @pytest.mark.skipif(sys.platform != 'win32' or not shutil.which('uv'), reason='needs Windows and uv on PATH')

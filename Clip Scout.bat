@@ -5,8 +5,8 @@ setlocal
 cd /d "%~dp0"
 if exist "uv\uv.exe" set "PATH=%~dp0uv;%PATH%"
 where uv >nul 2>nul || goto :no_uv
-where ffmpeg >nul 2>nul || call :get_ffmpeg || exit /b 1
-uv run --all-extras scout serve %*
+where ffmpeg >nul 2>nul && where ffprobe >nul 2>nul || call :get_ffmpeg || exit /b 1
+uv run --all-extras scout serve
 if errorlevel 1 pause
 exit /b
 
@@ -17,14 +17,14 @@ pause
 exit /b 1
 
 :get_ffmpeg
-echo Clip Scout needs ffmpeg, and it isn't installed.
+echo Clip Scout needs ffmpeg and ffprobe, and they aren't installed.
 where winget >nul 2>nul || goto :ffmpeg_by_hand
 set "answer=Y"
-set /p "answer=Install it now with winget? [Y/n] "
+set /p "answer=Install ffmpeg (it includes ffprobe) now with winget? [Y/n] "
 if /i not "%answer:~0,1%"=="Y" goto :ffmpeg_by_hand
 winget install --id Gyan.FFmpeg -e --source winget
 set "PATH=%PATH%;%LOCALAPPDATA%\Microsoft\WinGet\Links;%ProgramFiles%\WinGet\Links"
-where ffmpeg >nul 2>nul && exit /b 0
+where ffmpeg >nul 2>nul && where ffprobe >nul 2>nul && exit /b 0
 echo ffmpeg isn't on PATH yet. Close this window and open Clip Scout again.
 pause
 exit /b 1

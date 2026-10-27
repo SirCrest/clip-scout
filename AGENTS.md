@@ -13,8 +13,8 @@ Repeat until there's nothing left:
 3. Write your answer to the task's `output.json`, exactly in the format TASK.md gives.
 4. `uv run scout task submit <task id>`. If it lists problems, fix `output.json` and submit again.
 
-In a release folder (one that has `uv\uv.exe`), use `uv\uv.exe` wherever these steps say `uv` if `uv` isn't on
-PATH. `uv run scout task list` shows every task and its state. Only ever write a task's `output.json`: don't edit anything
+In a release folder (one with a `uv` folder holding `uv.exe`), if `uv` isn't on PATH, use that `uv.exe` wherever
+these steps say `uv`: `uv/uv.exe` in bash or PowerShell, `uv\uv.exe` in cmd. `uv run scout task list` shows every task and its state. Only ever write a task's `output.json`: don't edit anything
 else under `library/`, and don't change the guides in `elgato/` unless the user asks.
 
 Never upload, publish or post anything, and never delete media. Those need the user.
@@ -23,8 +23,8 @@ Never upload, publish or post anything, and never delete media. Those need the u
 
 - Python 3.12 via `uv` (`uv sync --all-extras`, `uv run scout ...`, `uv run pytest`); a plain `uv sync` removes
   the publish extra. Windows first; keep code Mac-ready.
-- Releases: `uv run python tools/build_release.py` zips HEAD with uv.exe into `dist/`. Bump `version` in
-  `pyproject.toml` first.
+- Releases: `uv run python tools/build_release.py` zips HEAD with uv.exe into `dist/`. First bump `version` in
+  `pyproject.toml`, run `uv lock`, and commit both.
 - `clipscout/`: `library.py` (on-disk format, read it first), `pipeline.py` (stages), `tasks.py` + `agents.py`
   (agent tasks and the CLI runners), one module per stage or task kind, `server.py` + `web/` (the app).
 - `clipscout/prompts/`: each task kind's instructions (`<kind>.md`) and answer format (`<kind>.schema.json`).
