@@ -1,5 +1,7 @@
 import hashlib
 import importlib.util
+import shutil
+import sys
 import tomllib
 import zipfile
 from pathlib import Path
@@ -34,6 +36,13 @@ def test_release_holds_the_app_and_uv(release):
     assert 'bundled uv 9.9.9' in files['Clip Scout/VERSION.txt'].decode()
     packaged = tomllib.loads(files['Clip Scout/pyproject.toml'].decode())['project']['version']
     assert out.name == f'Clip-Scout-{packaged}-windows.zip'
+
+
+@pytest.mark.skipif(sys.platform != 'win32' or not shutil.which('uv'), reason='needs Windows and uv on PATH')
+def test_bundles_the_real_uv(tmp_path):
+    out = build_release.build(shutil.which('uv'), tmp_path / 'dist', allow_dirty=True)
+    with zipfile.ZipFile(out) as z:
+        assert z.read('Clip Scout/VERSION.txt').decode().splitlines()[1].startswith('bundled uv ')
 
 
 def test_refuses_a_uv_that_is_not_for_windows(tmp_path):

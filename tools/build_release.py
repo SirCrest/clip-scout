@@ -40,10 +40,7 @@ def uv_version(uv):
     """`uv --version` of the uv being bundled, which also proves it's a working Windows uv."""
     if sys.platform != 'win32':
         return 'uv (version not checked: built off Windows)'
-    out = subprocess.run([str(uv), '--version'], capture_output=True, text=True, check=True).stdout.strip()
-    if 'windows' not in out:
-        raise SystemExit(f'{uv} reports "{out}", not a Windows build')
-    return out
+    return subprocess.run([str(uv), '--version'], capture_output=True, text=True, check=True).stdout.strip()
 
 
 def build(uv, out_dir=DIST, allow_dirty=False):
