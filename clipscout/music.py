@@ -67,7 +67,7 @@ def run(stream, progress=lambda f, note='': None):
             import torch  # noqa: F401
             import transformers  # noqa: F401
         except ImportError:
-            return ('skipped', 'install the music extra: uv sync --extra music')
+            return ('skipped', f'torch and transformers are missing: run {lib.uv("sync --all-extras")}')
     for n, c in enumerate(todo, 1):
         start = min(c.get('key_in', c['hook_at']), c['hook_at'])
         done[c['id']] = score(audio(stream.media, start, c['source_out'] - start))

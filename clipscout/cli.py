@@ -6,7 +6,9 @@ import sys
 def main(argv=None):
     if hasattr(sys.stdout, 'reconfigure'):
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+    from . import __version__
     p = argparse.ArgumentParser(prog='scout', description='Clip Scout: stream in, best clips out.')
+    p.add_argument('--version', action='version', version=f'Clip Scout {__version__}')
     sub = p.add_subparsers(dest='cmd', required=True)
 
     a = sub.add_parser('add', help='add a stream from a video file or a Twitch/YouTube URL')

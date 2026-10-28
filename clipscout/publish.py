@@ -263,7 +263,7 @@ def _need_libs():
         import googleapiclient  # noqa: F401
         import google_auth_oauthlib  # noqa: F401
     except ImportError:
-        raise PublishError('the publish extra is missing: run `uv sync --inexact --extra publish`')
+        raise PublishError(f'the publish extra is missing: run {lib.uv("sync --inexact --extra publish")}')
 
 
 def _credentials():
@@ -651,7 +651,7 @@ def cli(action, keys):
         ids = open_tasks_for(keys or kept_youtube_keys())
         print('\n'.join(ids) or 'Nothing to write: every kept YouTube clip already has copy.')
         if ids:
-            print('Run `uv run scout work` (or open the tasks with your agent) to write them.')
+            print(f'Run {lib.uv("run scout work")} (or open the tasks with your agent) to write them.')
         return 0
     if action == 'upload':
         if not keys:

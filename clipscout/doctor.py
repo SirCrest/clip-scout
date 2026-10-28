@@ -48,7 +48,8 @@ def check_gpu():
             except (OSError, AttributeError):
                 missing.append(dll)
         if missing:
-            rows.append((WARN, f"CUDA libraries not loadable: {', '.join(missing)} (run `uv sync`)"))
+            rows.append((WARN, f"CUDA libraries not loadable: {', '.join(missing)} "
+                               f"(run {lib.uv('sync --all-extras')})"))
     return rows
 
 
@@ -65,7 +66,8 @@ def check_torch():
         cuda = torch.cuda.is_available()
         rows = [(OK, f"torch {torch.__version__} ({'CUDA' if cuda else 'CPU only'}) for the music check and editing")]
     except ImportError:
-        return [(WARN, 'torch not installed: music check skipped, filler timing rougher (run `uv sync --all-extras`)')]
+        return [(WARN, f'torch not installed: music check skipped, filler timing rougher '
+                       f'(run {lib.uv("sync --all-extras")})')]
     from pathlib import Path
     import os
     hub = Path(os.environ.get('HF_HOME', Path.home() / '.cache' / 'huggingface')) / 'hub'
@@ -102,12 +104,14 @@ def check_library():
     from .media import is_fragmented
     slow = [s for s in lib.all_streams() if s.media and is_fragmented(s.media)]
     if slow:
-        rows.append((WARN, f'{len(slow)} source videos are fragmented and open slowly: run `scout media --fix`'))
+        rows.append((WARN, f'{len(slow)} source videos are fragmented and open slowly: '
+                           f'run {lib.uv("run scout media --fix")}'))
     return rows
 
 
 def checks():
-    rows = []
+    from . import __version__
+    rows = [(OK, f'Clip Scout {__version__}')]
     for check in (check_ffmpeg, check_gpu, check_model, check_torch, check_agents, check_library):
         try:
             rows += check()

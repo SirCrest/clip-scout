@@ -75,7 +75,7 @@ def create(kind, stream_id, name, instructions, input_text, keys=None, meta=None
         f"\n\n---\nTask id: `{tid}`. Input: `{rel(f / 'input.txt')}`. Write your answer to `{rel(f / 'output.json')}` "
         f"(valid JSON, UTF-8, nothing else in the file). Its format is checked against "
         f"`{rel(PROMPTS / (kind + '.schema.json'))}`. If you can run commands, finish with "
-        f"`uv run scout task submit {tid}` and fix anything it reports. Don't change any other file.\n")
+        f"{lib.uv(f'run scout task submit {tid}')} and fix anything it reports. Don't change any other file.\n")
     (f / 'TASK.md').write_text(instructions.rstrip() + footer, encoding='utf-8')
     (f / 'output.json').unlink(missing_ok=True)
     _save({'id': tid, 'kind': kind, 'stream': stream_id, 'name': name, 'keys': keys or [], 'state': 'open',
@@ -227,7 +227,7 @@ def cli(args):
             return 0
         f = folder(task['id'])
         print(f"Task {task['id']}\nInstructions: {rel(f / 'TASK.md')}\nWrite: {rel(f / 'output.json')}\n"
-              f"Then: uv run scout task submit {task['id']}")
+              f"Then: {lib.uv(f'run scout task submit {task['id']}')}")
     elif args.action == 'show':
         print((folder(args.id) / 'TASK.md').read_text(encoding='utf-8'))
     elif args.action == 'submit':

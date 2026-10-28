@@ -37,6 +37,16 @@ LIBRARY = Path(os.environ.get('CLIPSCOUT_LIBRARY', ROOT / 'library'))
 STREAMS = LIBRARY / 'streams'
 TASKS = LIBRARY / 'tasks'
 ELGATO = ROOT / 'elgato'
+RELEASE = (ROOT / 'uv' / 'uv.exe').exists()  # a release folder carries its own uv; a clone uses the one on PATH
+
+
+def uv(args):
+    """A uv command to show people and agents, in backticks. A release's uv is on PATH only in the launcher's window,
+    so the command names it, and that works only from the Clip Scout folder, with cmd needing backslashes."""
+    if not RELEASE:
+        return f'`uv {args}`'
+    return f'`uv/uv.exe {args}` in the Clip Scout folder (`uv\\uv.exe` in cmd)'
+
 
 STAGES = ('fetch', 'transcribe', 'pick', 'plan', 'music', 'judge')
 AGENT_STAGES = ('pick', 'judge')

@@ -1,0 +1,12 @@
+# Keeps search tools (ripgrep and the agents built on it) out of these where there is no git repo, as in a release
+# folder. Lists what .gitignore does (tests/test_release.py checks).
+library/
+secrets/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+web/dist/
+*.log
+/dist/
